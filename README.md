@@ -7,3 +7,4 @@ https://github.com/myelin/myelin-kicad-libraries (STM32 module KiCad library)
 
 https://github.com/mysensors-kicad/mysensors_symbols (RFM95 KiCad library)
 
+https://github.com/novirium/ESPilot/blob/master/lib/ESPilot.pretty/RFM95.kicad_mod (RFM95 KiCad footprint)
