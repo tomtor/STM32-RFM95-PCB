@@ -286,80 +286,10 @@ NoConn ~ 5800 3500
 NoConn ~ 5800 3600
 NoConn ~ 5800 3700
 NoConn ~ 5800 3800
-Wire Wire Line
-	7750 1900 9100 1900
-Wire Wire Line
-	3900 3600 4700 3600
-Wire Wire Line
-	4700 3600 4700 3550
-Wire Wire Line
-	4700 3850 4350 3850
-Wire Wire Line
-	4350 3850 4350 3150
-Wire Wire Line
-	4350 3150 3900 3150
-Wire Wire Line
-	5800 3300 6150 3300
-Wire Wire Line
-	6150 3300 6150 4450
-Wire Wire Line
-	6150 4450 4400 4450
-Wire Wire Line
-	4400 4450 4400 4050
-Wire Wire Line
-	4400 4050 3900 4050
-Wire Wire Line
-	5800 3400 6000 3400
-Wire Wire Line
-	6000 3400 6000 6500
-Wire Wire Line
-	6000 6500 1100 6500
-Wire Wire Line
-	1100 6500 1100 2050
-Wire Wire Line
-	1100 4050 1800 4050
-Wire Wire Line
-	8400 3800 8900 3800
-Connection ~ 8900 3800
-Connection ~ 8800 1900
-Wire Wire Line
-	8800 1900 8800 2250
-Wire Wire Line
-	8800 2850 9100 2850
-Wire Wire Line
-	7550 4750 8850 4750
-Connection ~ 9000 2850
-Wire Wire Line
-	8800 2850 8800 2550
-Wire Wire Line
-	3900 3300 4200 3300
-Wire Wire Line
-	4200 3300 4200 3350
-Wire Wire Line
-	4200 3350 4700 3350
-Wire Wire Line
-	4700 3450 3900 3450
-Wire Wire Line
-	1700 4950 1800 4950
 Text Label 1550 5100 3    60   ~ 0
 3V3
-Wire Wire Line
-	3900 2550 5250 2550
-Wire Wire Line
-	5250 2550 5250 2950
 Text Label 4550 2550 0    60   ~ 0
 3V3
-Wire Wire Line
-	4700 3650 4700 3750
-Wire Wire Line
-	4700 3750 3900 3750
-Connection ~ 5000 2550
-Connection ~ 4400 2550
-Connection ~ 4800 2550
-Wire Wire Line
-	4400 2550 4400 2100
-Wire Wire Line
-	4800 2100 4800 2550
 $Comp
 L GND #PWR015
 U 1 1 58DF9B90
@@ -437,6 +367,249 @@ F 3 "" H 650 1650 50  0001 C CNN
 	1    650  1650
 	-1   0    0    1   
 $EndComp
+$Comp
+L CONN_01X03 J4
+U 1 1 58E028DC
+P 650 5000
+F 0 "J4" H 650 5200 50  0000 C CNN
+F 1 "CONN_01X03" V 750 5000 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm" H 650 5000 50  0001 C CNN
+F 3 "" H 650 5000 50  0001 C CNN
+	1    650  5000
+	-1   0    0    1   
+$EndComp
+$Comp
+L GND #PWR019
+U 1 1 58E02B12
+P 850 5000
+F 0 "#PWR019" H 850 4750 50  0001 C CNN
+F 1 "GND" H 850 4850 50  0000 C CNN
+F 2 "" H 850 5000 50  0001 C CNN
+F 3 "" H 850 5000 50  0001 C CNN
+	1    850  5000
+	0    -1   -1   0   
+$EndComp
+$Comp
+L VCC #PWR020
+U 1 1 58E02B47
+P 850 4900
+F 0 "#PWR020" H 850 4750 50  0001 C CNN
+F 1 "VCC" H 850 5050 50  0000 C CNN
+F 2 "" H 850 4900 50  0001 C CNN
+F 3 "" H 850 4900 50  0001 C CNN
+	1    850  4900
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X03 J5
+U 1 1 58E02E8B
+P 6400 2050
+F 0 "J5" H 6400 2250 50  0000 C CNN
+F 1 "CONN_01X03" V 6500 2050 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm" H 6400 2050 50  0001 C CNN
+F 3 "" H 6400 2050 50  0001 C CNN
+	1    6400 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR021
+U 1 1 58E02F25
+P 6200 1950
+F 0 "#PWR021" H 6200 1700 50  0001 C CNN
+F 1 "GND" H 6200 1800 50  0000 C CNN
+F 2 "" H 6200 1950 50  0001 C CNN
+F 3 "" H 6200 1950 50  0001 C CNN
+	1    6200 1950
+	-1   0    0    1   
+$EndComp
+$Comp
+L GND #PWR022
+U 1 1 58E02F54
+P 6200 2050
+F 0 "#PWR022" H 6200 1800 50  0001 C CNN
+F 1 "GND" H 6200 1900 50  0000 C CNN
+F 2 "" H 6200 2050 50  0001 C CNN
+F 3 "" H 6200 2050 50  0001 C CNN
+	1    6200 2050
+	0    1    1    0   
+$EndComp
+Text Label 5850 2150 0    60   ~ 0
+3V3
+$Comp
+L CONN_01X01 J6
+U 1 1 58E096FD
+P 4100 5100
+F 0 "J6" H 4100 5200 50  0000 C CNN
+F 1 "CONN_01X01" V 4200 5100 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x01_Pitch2.54mm" H 4100 5100 50  0001 C CNN
+F 3 "" H 4100 5100 50  0001 C CNN
+	1    4100 5100
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X14 J7
+U 1 1 58E0990E
+P 5400 5500
+F 0 "J7" H 5400 6250 50  0000 C CNN
+F 1 "CONN_01X14" V 5500 5500 50  0000 C CNN
+F 2 "Socket_Strips:Socket_Strip_Straight_1x14_Pitch2.54mm" H 5400 5500 50  0001 C CNN
+F 3 "" H 5400 5500 50  0001 C CNN
+	1    5400 5500
+	1    0    0    -1  
+$EndComp
+Text Label 3900 2700 0    60   ~ 0
+P37
+Text Label 3900 3000 0    60   ~ 0
+P35
+Text Label 3900 3150 0    60   ~ 0
+P34
+Text Label 3900 3450 0    60   ~ 0
+P32
+Text Label 3900 3750 0    60   ~ 0
+P30
+Text Label 3900 2850 0    60   ~ 0
+P36
+Text Label 3900 3300 0    60   ~ 0
+P33
+Text Label 3900 3600 0    60   ~ 0
+P31
+Text Label 3900 3900 0    60   ~ 0
+P29
+Text Label 3900 4050 0    60   ~ 0
+P28
+Text Label 3900 4200 0    60   ~ 0
+P27
+Text Label 3900 4500 0    60   ~ 0
+P25
+Text Label 3900 4950 0    60   ~ 0
+P22
+NoConn ~ 3900 4650
+Text Label 5200 4850 2    60   ~ 0
+P37
+Text Label 5200 4950 2    60   ~ 0
+P36
+Text Label 5200 5050 2    60   ~ 0
+P35
+Text Label 5200 5150 2    60   ~ 0
+P34
+Text Label 5200 5250 2    60   ~ 0
+P33
+Text Label 5200 5350 2    60   ~ 0
+P32
+Text Label 5200 5450 2    60   ~ 0
+P31
+Text Label 5200 5550 2    60   ~ 0
+P30
+Text Label 5200 5650 2    60   ~ 0
+P29
+Text Label 5200 5750 2    60   ~ 0
+P28
+Text Label 5200 5850 2    60   ~ 0
+P27
+Text Label 5200 6050 2    60   ~ 0
+P25
+Text Label 5200 6150 2    60   ~ 0
+P22
+Text Label 3900 4350 0    60   ~ 0
+P26
+Text Label 5200 5950 2    60   ~ 0
+P26
+Text Label 8400 3800 0    60   ~ 0
+P26
+$Comp
+L PWR_FLAG #FLG023
+U 1 1 58E0A7A9
+P 3900 5100
+F 0 "#FLG023" H 3900 5175 50  0001 C CNN
+F 1 "PWR_FLAG" V 3900 5250 50  0000 L CNN
+F 2 "" H 3900 5100 50  0001 C CNN
+F 3 "" H 3900 5100 50  0001 C CNN
+	1    3900 5100
+	-1   0    0    1   
+$EndComp
+Text Label 8800 2850 2    60   ~ 0
+Solar
+$Comp
+L CONN_01X05 J8
+U 1 1 58E0ADB1
+P 3150 7150
+F 0 "J8" H 3150 7450 50  0000 C CNN
+F 1 "CONN_01X05" V 3250 7150 50  0000 C CNN
+F 2 "Socket_Strips:Socket_Strip_Straight_1x16_Pitch2.54mm" H 3150 7150 50  0001 C CNN
+F 3 "" H 3150 7150 50  0001 C CNN
+	1    3150 7150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7750 1900 9100 1900
+Wire Wire Line
+	3900 3600 4700 3600
+Wire Wire Line
+	4700 3600 4700 3550
+Wire Wire Line
+	4700 3850 4350 3850
+Wire Wire Line
+	4350 3850 4350 3150
+Wire Wire Line
+	4350 3150 3900 3150
+Wire Wire Line
+	5800 3300 6150 3300
+Wire Wire Line
+	6150 3300 6150 4450
+Wire Wire Line
+	6150 4450 4400 4450
+Wire Wire Line
+	4400 4450 4400 4050
+Wire Wire Line
+	4400 4050 3900 4050
+Wire Wire Line
+	5800 3400 6000 3400
+Wire Wire Line
+	6000 3400 6000 6500
+Wire Wire Line
+	6000 6500 1100 6500
+Wire Wire Line
+	1100 6500 1100 2050
+Wire Wire Line
+	1100 4050 1800 4050
+Wire Wire Line
+	8400 3800 8900 3800
+Connection ~ 8900 3800
+Connection ~ 8800 1900
+Wire Wire Line
+	8800 1900 8800 2250
+Wire Wire Line
+	8800 2850 9100 2850
+Wire Wire Line
+	7550 4750 8850 4750
+Connection ~ 9000 2850
+Wire Wire Line
+	8800 2850 8800 2550
+Wire Wire Line
+	3900 3300 4200 3300
+Wire Wire Line
+	4200 3300 4200 3350
+Wire Wire Line
+	4200 3350 4700 3350
+Wire Wire Line
+	4700 3450 3900 3450
+Wire Wire Line
+	1700 4950 1800 4950
+Wire Wire Line
+	3900 2550 5250 2550
+Wire Wire Line
+	5250 2550 5250 2950
+Wire Wire Line
+	4700 3650 4700 3750
+Wire Wire Line
+	4700 3750 3900 3750
+Connection ~ 5000 2550
+Connection ~ 4400 2550
+Connection ~ 4800 2550
+Wire Wire Line
+	4400 2550 4400 2100
+Wire Wire Line
+	4800 2100 4800 2550
 Wire Wire Line
 	1800 4650 850  4650
 Wire Wire Line
@@ -532,170 +705,44 @@ Wire Wire Line
 	1700 2250 1700 850 
 Wire Wire Line
 	1700 850  850  850 
-$Comp
-L CONN_01X03 J4
-U 1 1 58E028DC
-P 650 5000
-F 0 "J4" H 650 5200 50  0000 C CNN
-F 1 "CONN_01X03" V 750 5000 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm" H 650 5000 50  0001 C CNN
-F 3 "" H 650 5000 50  0001 C CNN
-	1    650  5000
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
 	850  5100 1800 5100
-$Comp
-L GND #PWR019
-U 1 1 58E02B12
-P 850 5000
-F 0 "#PWR019" H 850 4750 50  0001 C CNN
-F 1 "GND" H 850 4850 50  0000 C CNN
-F 2 "" H 850 5000 50  0001 C CNN
-F 3 "" H 850 5000 50  0001 C CNN
-	1    850  5000
-	0    -1   -1   0   
-$EndComp
-$Comp
-L VCC #PWR020
-U 1 1 58E02B47
-P 850 4900
-F 0 "#PWR020" H 850 4750 50  0001 C CNN
-F 1 "VCC" H 850 5050 50  0000 C CNN
-F 2 "" H 850 4900 50  0001 C CNN
-F 3 "" H 850 4900 50  0001 C CNN
-	1    850  4900
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	1400 3150 1800 3150
-$Comp
-L CONN_01X03 J5
-U 1 1 58E02E8B
-P 6400 2050
-F 0 "J5" H 6400 2250 50  0000 C CNN
-F 1 "CONN_01X03" V 6500 2050 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm" H 6400 2050 50  0001 C CNN
-F 3 "" H 6400 2050 50  0001 C CNN
-	1    6400 2050
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR021
-U 1 1 58E02F25
-P 6200 1950
-F 0 "#PWR021" H 6200 1700 50  0001 C CNN
-F 1 "GND" H 6200 1800 50  0000 C CNN
-F 2 "" H 6200 1950 50  0001 C CNN
-F 3 "" H 6200 1950 50  0001 C CNN
-	1    6200 1950
-	-1   0    0    1   
-$EndComp
-$Comp
-L GND #PWR022
-U 1 1 58E02F54
-P 6200 2050
-F 0 "#PWR022" H 6200 1800 50  0001 C CNN
-F 1 "GND" H 6200 1900 50  0000 C CNN
-F 2 "" H 6200 2050 50  0001 C CNN
-F 3 "" H 6200 2050 50  0001 C CNN
-	1    6200 2050
-	0    1    1    0   
-$EndComp
 Wire Wire Line
 	5750 2150 6200 2150
-Text Label 5850 2150 0    60   ~ 0
+Wire Wire Line
+	2950 6950 2950 7350
+Connection ~ 2950 7050
+Connection ~ 2950 7150
+Connection ~ 2950 7250
+$Comp
+L GND #PWR024
+U 1 1 58E0B20A
+P 2950 7350
+F 0 "#PWR024" H 2950 7100 50  0001 C CNN
+F 1 "GND" H 2950 7200 50  0000 C CNN
+F 2 "" H 2950 7350 50  0001 C CNN
+F 3 "" H 2950 7350 50  0001 C CNN
+	1    2950 7350
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X05 J9
+U 1 1 58E0B40A
+P 3700 7150
+F 0 "J9" H 3700 7450 50  0000 C CNN
+F 1 "CONN_01X05" V 3800 7150 50  0000 C CNN
+F 2 "Socket_Strips:Socket_Strip_Straight_1x05_Pitch2.54mm" H 3700 7150 50  0001 C CNN
+F 3 "" H 3700 7150 50  0001 C CNN
+	1    3700 7150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3500 6950 3500 7350
+Connection ~ 3500 7050
+Connection ~ 3500 7150
+Connection ~ 3500 7250
+Text Label 3500 7350 3    60   ~ 0
 3V3
-$Comp
-L CONN_01X01 J6
-U 1 1 58E096FD
-P 4100 5100
-F 0 "J6" H 4100 5200 50  0000 C CNN
-F 1 "CONN_01X01" V 4200 5100 50  0000 C CNN
-F 2 "" H 4100 5100 50  0001 C CNN
-F 3 "" H 4100 5100 50  0001 C CNN
-	1    4100 5100
-	1    0    0    -1  
-$EndComp
-$Comp
-L CONN_01X14 J7
-U 1 1 58E0990E
-P 5400 5500
-F 0 "J7" H 5400 6250 50  0000 C CNN
-F 1 "CONN_01X14" V 5500 5500 50  0000 C CNN
-F 2 "" H 5400 5500 50  0001 C CNN
-F 3 "" H 5400 5500 50  0001 C CNN
-	1    5400 5500
-	1    0    0    -1  
-$EndComp
-Text Label 3900 2700 0    60   ~ 0
-P37
-Text Label 3900 3000 0    60   ~ 0
-P35
-Text Label 3900 3150 0    60   ~ 0
-P34
-Text Label 3900 3450 0    60   ~ 0
-P32
-Text Label 3900 3750 0    60   ~ 0
-P30
-Text Label 3900 2850 0    60   ~ 0
-P36
-Text Label 3900 3300 0    60   ~ 0
-P33
-Text Label 3900 3600 0    60   ~ 0
-P31
-Text Label 3900 3900 0    60   ~ 0
-P29
-Text Label 3900 4050 0    60   ~ 0
-P28
-Text Label 3900 4200 0    60   ~ 0
-P27
-Text Label 3900 4500 0    60   ~ 0
-P25
-Text Label 3900 4950 0    60   ~ 0
-P22
-NoConn ~ 3900 4650
-Text Label 5200 4850 2    60   ~ 0
-P37
-Text Label 5200 4950 2    60   ~ 0
-P36
-Text Label 5200 5050 2    60   ~ 0
-P35
-Text Label 5200 5150 2    60   ~ 0
-P34
-Text Label 5200 5250 2    60   ~ 0
-P33
-Text Label 5200 5350 2    60   ~ 0
-P32
-Text Label 5200 5450 2    60   ~ 0
-P31
-Text Label 5200 5550 2    60   ~ 0
-P30
-Text Label 5200 5650 2    60   ~ 0
-P29
-Text Label 5200 5750 2    60   ~ 0
-P28
-Text Label 5200 5850 2    60   ~ 0
-P27
-Text Label 5200 6050 2    60   ~ 0
-P25
-Text Label 5200 6150 2    60   ~ 0
-P22
-Text Label 3900 4350 0    60   ~ 0
-P26
-Text Label 5200 5950 2    60   ~ 0
-P26
-Text Label 8400 3800 0    60   ~ 0
-P26
-$Comp
-L PWR_FLAG #FLG023
-U 1 1 58E0A7A9
-P 3900 5100
-F 0 "#FLG023" H 3900 5175 50  0001 C CNN
-F 1 "PWR_FLAG" V 3900 5250 50  0000 L CNN
-F 2 "" H 3900 5100 50  0001 C CNN
-F 3 "" H 3900 5100 50  0001 C CNN
-	1    3900 5100
-	-1   0    0    1   
-$EndComp
 $EndSCHEMATC

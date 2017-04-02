@@ -1,4 +1,4 @@
-update=vr 31 mrt 2017 13:48:16 CEST
+update=zo 02 apr 2017 13:20:41 CEST
 version=1
 last_client=kicad
 [pcbnew]
@@ -60,3 +60,13 @@ LibName28=contrib
 LibName29=valves
 LibName30=STM32China/stm32f103c8t6-module-china
 LibName31=RFM/RFM95
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=Pcbnew
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
