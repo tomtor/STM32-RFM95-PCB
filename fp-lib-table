@@ -1,4 +1,5 @@
 (fp_lib_table
-  (lib (name STM32China)(type KiCad)(uri /home/tom/tmp/STM32China)(options "")(descr ""))
+  (lib (name STM32China)(type KiCad)(uri "$(KIPRJMOD)/STM32China")(options "")(descr ""))
   (lib (name RFM)(type KiCad)(uri "$(KIPRJMOD)/RFM")(options "")(descr ""))
+  (lib (name Socket_Strips)(type KiCad)(uri /home/tom/Downloads/kicad/Socket_Strips.pretty)(options "")(descr ""))
 )
