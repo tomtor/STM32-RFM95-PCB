@@ -535,7 +535,7 @@ U 1 1 58E0ADB1
 P 3150 7150
 F 0 "J8" H 3150 7450 50  0000 C CNN
 F 1 "CONN_01X05" V 3250 7150 50  0000 C CNN
-F 2 "Socket_Strips:Socket_Strip_Straight_1x16_Pitch2.54mm" H 3150 7150 50  0001 C CNN
+F 2 "Socket_Strips:Socket_Strip_Straight_1x05_Pitch2.54mm" H 3150 7150 50  0001 C CNN
 F 3 "" H 3150 7150 50  0001 C CNN
 	1    3150 7150
 	1    0    0    -1  

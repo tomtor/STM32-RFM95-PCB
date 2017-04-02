@@ -5,7 +5,7 @@
     (no_connects 0)
     (area 83.744999 55.804999 140.410001 106.755001)
     (thickness 1.6)
-    (drawings 19)
+    (drawings 20)
     (tracks 214)
     (zones 0)
     (modules 58)
@@ -2648,6 +2648,9 @@
     )
   )
 
+  (gr_text Antenna (at 88.9 57.15) (layer F.SilkS)
+    (effects (font (size 1.5 1.5) (thickness 0.3)))
+  )
   (gr_line (start 83.82 106.68) (end 140.335 106.68) (angle 90) (layer Edge.Cuts) (width 0.15))
   (gr_line (start 83.82 55.88) (end 83.82 106.68) (angle 90) (layer Edge.Cuts) (width 0.15))
   (gr_line (start 140.335 55.88) (end 83.82 55.88) (angle 90) (layer Edge.Cuts) (width 0.15))
