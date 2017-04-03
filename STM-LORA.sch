@@ -38,7 +38,7 @@ encoding utf-8
 Sheet 1 1
 Title "STM32 RFM95 Proto Board"
 Date "2017-04-01"
-Rev "0.1"
+Rev "0.2"
 Comp "http://v7f.eu"
 Comment1 ""
 Comment2 ""
@@ -147,12 +147,12 @@ $EndComp
 $Comp
 L GND #PWR08
 U 1 1 58DF686D
-P 7550 4750
-F 0 "#PWR08" H 7550 4500 50  0001 C CNN
-F 1 "GND" H 7550 4600 50  0000 C CNN
-F 2 "" H 7550 4750 50  0000 C CNN
-F 3 "" H 7550 4750 50  0000 C CNN
-	1    7550 4750
+P 7550 4500
+F 0 "#PWR08" H 7550 4250 50  0001 C CNN
+F 1 "GND" H 7550 4350 50  0000 C CNN
+F 2 "" H 7550 4500 50  0000 C CNN
+F 3 "" H 7550 4500 50  0000 C CNN
+	1    7550 4500
 	0    1    1    0   
 $EndComp
 $Comp
@@ -217,12 +217,12 @@ Text Notes 9550 2050 0    60   ~ 0
 $Comp
 L PWR_FLAG #FLG011
 U 1 1 58DF7179
-P 8850 4750
-F 0 "#FLG011" H 8850 4845 50  0001 C CNN
-F 1 "PWR_FLAG" H 8850 4930 50  0000 C CNN
-F 2 "" H 8850 4750 50  0000 C CNN
-F 3 "" H 8850 4750 50  0000 C CNN
-	1    8850 4750
+P 8850 4500
+F 0 "#FLG011" H 8850 4595 50  0001 C CNN
+F 1 "PWR_FLAG" H 8850 4680 50  0000 C CNN
+F 2 "" H 8850 4500 50  0000 C CNN
+F 3 "" H 8850 4500 50  0000 C CNN
+	1    8850 4500
 	0    1    1    0   
 $EndComp
 $Comp
@@ -541,7 +541,9 @@ F 3 "" H 3150 7150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7750 1900 9100 1900
+	7750 1900 8800 1900
+Wire Wire Line
+	8800 1900 9100 1900
 Wire Wire Line
 	3900 3600 4700 3600
 Wire Wire Line
@@ -569,7 +571,9 @@ Wire Wire Line
 Wire Wire Line
 	6000 6500 1100 6500
 Wire Wire Line
-	1100 6500 1100 2050
+	1100 6500 1100 4050
+Wire Wire Line
+	1100 4050 1100 2050
 Wire Wire Line
 	1100 4050 1800 4050
 Wire Wire Line
@@ -579,9 +583,11 @@ Connection ~ 8800 1900
 Wire Wire Line
 	8800 1900 8800 2250
 Wire Wire Line
-	8800 2850 9100 2850
+	8800 2850 9000 2850
 Wire Wire Line
-	7550 4750 8850 4750
+	9000 2850 9100 2850
+Wire Wire Line
+	7550 4500 8850 4500
 Connection ~ 9000 2850
 Wire Wire Line
 	8800 2850 8800 2550
@@ -596,14 +602,17 @@ Wire Wire Line
 Wire Wire Line
 	1700 4950 1800 4950
 Wire Wire Line
-	3900 2550 5250 2550
+	3900 2550 4400 2550
+Wire Wire Line
+	4400 2550 4800 2550
+Wire Wire Line
+	4800 2550 5250 2550
 Wire Wire Line
 	5250 2550 5250 2950
 Wire Wire Line
 	4700 3650 4700 3750
 Wire Wire Line
 	4700 3750 3900 3750
-Connection ~ 5000 2550
 Connection ~ 4400 2550
 Connection ~ 4800 2550
 Wire Wire Line
@@ -712,7 +721,13 @@ Wire Wire Line
 Wire Wire Line
 	5750 2150 6200 2150
 Wire Wire Line
-	2950 6950 2950 7350
+	2950 6950 2950 7050
+Wire Wire Line
+	2950 7050 2950 7150
+Wire Wire Line
+	2950 7150 2950 7250
+Wire Wire Line
+	2950 7250 2950 7350
 Connection ~ 2950 7050
 Connection ~ 2950 7150
 Connection ~ 2950 7250
@@ -739,10 +754,84 @@ F 3 "" H 3700 7150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3500 6950 3500 7350
+	3500 6950 3500 7050
+Wire Wire Line
+	3500 7050 3500 7150
+Wire Wire Line
+	3500 7150 3500 7250
+Wire Wire Line
+	3500 7250 3500 7350
 Connection ~ 3500 7050
 Connection ~ 3500 7150
 Connection ~ 3500 7250
 Text Label 3500 7350 3    60   ~ 0
 3V3
+Text Notes 6550 5000 0    60   ~ 0
+Exp. Area:
+$Comp
+L CONN_02X07 J10
+U 1 1 58E22FE3
+P 7400 5250
+F 0 "J10" H 7400 5650 50  0000 C CNN
+F 1 "CONN_02X07" V 7400 5250 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x07_Pitch2.54mm" H 7400 4050 50  0001 C CNN
+F 3 "" H 7400 4050 50  0001 C CNN
+	1    7400 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_02X09 J11
+U 1 1 58E2304D
+P 9150 5350
+F 0 "J11" H 9150 5850 50  0000 C CNN
+F 1 "CONN_02X09" V 9150 5350 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x09_Pitch2.54mm" H 9150 4150 50  0001 C CNN
+F 3 "" H 9150 4150 50  0001 C CNN
+	1    9150 5350
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X02 J12
+U 1 1 58E237FE
+P 7950 5000
+F 0 "J12" H 7950 5150 50  0000 C CNN
+F 1 "CONN_01X02" V 8050 5000 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm" H 7950 5000 50  0001 C CNN
+F 3 "" H 7950 5000 50  0001 C CNN
+	1    7950 5000
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X02 J13
+U 1 1 58E23852
+P 7950 5600
+F 0 "J13" H 7950 5750 50  0000 C CNN
+F 1 "CONN_01X02" V 8050 5600 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm" H 7950 5600 50  0001 C CNN
+F 3 "" H 7950 5600 50  0001 C CNN
+	1    7950 5600
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X02 J14
+U 1 1 58E238BA
+P 7950 6200
+F 0 "J14" H 7950 6350 50  0000 C CNN
+F 1 "CONN_01X02" V 8050 6200 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm" H 7950 6200 50  0001 C CNN
+F 3 "" H 7950 6200 50  0001 C CNN
+	1    7950 6200
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X03 J15
+U 1 1 58E239DC
+P 8450 5050
+F 0 "J15" H 8450 5250 50  0000 C CNN
+F 1 "CONN_01X03" V 8550 5050 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm" H 8450 5050 50  0001 C CNN
+F 3 "" H 8450 5050 50  0001 C CNN
+	1    8450 5050
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
