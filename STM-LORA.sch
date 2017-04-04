@@ -541,9 +541,7 @@ F 3 "" H 3150 7150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7750 1900 8800 1900
-Wire Wire Line
-	8800 1900 9100 1900
+	7750 1900 9100 1900
 Wire Wire Line
 	3900 3600 4700 3600
 Wire Wire Line
@@ -571,9 +569,7 @@ Wire Wire Line
 Wire Wire Line
 	6000 6500 1100 6500
 Wire Wire Line
-	1100 6500 1100 4050
-Wire Wire Line
-	1100 4050 1100 2050
+	1100 6500 1100 2050
 Wire Wire Line
 	1100 4050 1800 4050
 Wire Wire Line
@@ -583,9 +579,7 @@ Connection ~ 8800 1900
 Wire Wire Line
 	8800 1900 8800 2250
 Wire Wire Line
-	8800 2850 9000 2850
-Wire Wire Line
-	9000 2850 9100 2850
+	8800 2850 9100 2850
 Wire Wire Line
 	7550 4500 8850 4500
 Connection ~ 9000 2850
@@ -602,11 +596,7 @@ Wire Wire Line
 Wire Wire Line
 	1700 4950 1800 4950
 Wire Wire Line
-	3900 2550 4400 2550
-Wire Wire Line
-	4400 2550 4800 2550
-Wire Wire Line
-	4800 2550 5250 2550
+	3900 2550 5250 2550
 Wire Wire Line
 	5250 2550 5250 2950
 Wire Wire Line
@@ -721,13 +711,7 @@ Wire Wire Line
 Wire Wire Line
 	5750 2150 6200 2150
 Wire Wire Line
-	2950 6950 2950 7050
-Wire Wire Line
-	2950 7050 2950 7150
-Wire Wire Line
-	2950 7150 2950 7250
-Wire Wire Line
-	2950 7250 2950 7350
+	2950 6950 2950 7350
 Connection ~ 2950 7050
 Connection ~ 2950 7150
 Connection ~ 2950 7250
@@ -754,13 +738,7 @@ F 3 "" H 3700 7150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3500 6950 3500 7050
-Wire Wire Line
-	3500 7050 3500 7150
-Wire Wire Line
-	3500 7150 3500 7250
-Wire Wire Line
-	3500 7250 3500 7350
+	3500 6950 3500 7350
 Connection ~ 3500 7050
 Connection ~ 3500 7150
 Connection ~ 3500 7250
@@ -834,4 +812,45 @@ F 3 "" H 8450 5050 50  0001 C CNN
 	1    8450 5050
 	1    0    0    -1  
 $EndComp
+NoConn ~ 7150 4950
+NoConn ~ 7150 5050
+NoConn ~ 7150 5150
+NoConn ~ 7150 5250
+NoConn ~ 7150 5350
+NoConn ~ 7150 5450
+NoConn ~ 7150 5550
+NoConn ~ 7650 4950
+NoConn ~ 7650 5050
+NoConn ~ 7650 5150
+NoConn ~ 7650 5250
+NoConn ~ 7650 5350
+NoConn ~ 7650 5450
+NoConn ~ 7650 5550
+NoConn ~ 7750 4950
+NoConn ~ 7750 5050
+NoConn ~ 7750 5550
+NoConn ~ 7750 5650
+NoConn ~ 7750 6150
+NoConn ~ 7750 6250
+NoConn ~ 8250 4950
+NoConn ~ 8250 5050
+NoConn ~ 8250 5150
+NoConn ~ 8900 4950
+NoConn ~ 8900 5050
+NoConn ~ 8900 5150
+NoConn ~ 8900 5250
+NoConn ~ 8900 5350
+NoConn ~ 8900 5450
+NoConn ~ 8900 5550
+NoConn ~ 8900 5650
+NoConn ~ 8900 5750
+NoConn ~ 9400 4950
+NoConn ~ 9400 5050
+NoConn ~ 9400 5150
+NoConn ~ 9400 5250
+NoConn ~ 9400 5350
+NoConn ~ 9400 5450
+NoConn ~ 9400 5550
+NoConn ~ 9400 5650
+NoConn ~ 9400 5750
 $EndSCHEMATC
