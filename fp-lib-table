@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name RFM)(type KiCad)(uri "$(KIPRJMOD)/RFM")(options "")(descr ""))
+  (lib (name STM32China)(type KiCad)(uri "$(KIPRJMOD)/STM32China")(options "")(descr ""))
+)
