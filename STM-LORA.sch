@@ -37,8 +37,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "STM32 RFM95 Proto Board"
-Date "2017-04-01"
-Rev "0.2"
+Date "2017-06-10"
+Rev "0.3"
 Comp "http://v7f.eu"
 Comment1 ""
 Comment2 ""
@@ -281,7 +281,6 @@ F 3 "" H 1800 4800 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 NoConn ~ 3900 4800
-NoConn ~ 4700 3150
 NoConn ~ 5800 3500
 NoConn ~ 5800 3600
 NoConn ~ 5800 3700
@@ -567,9 +566,9 @@ Wire Wire Line
 Wire Wire Line
 	6000 3400 6000 6500
 Wire Wire Line
-	1100 6500 6000 6500
+	6000 6500 1100 6500
 Wire Wire Line
-	1100 2050 1100 6500
+	1100 6500 1100 2050
 Wire Wire Line
 	1100 4050 1800 4050
 Wire Wire Line
@@ -853,4 +852,15 @@ NoConn ~ 9400 5450
 NoConn ~ 9400 5550
 NoConn ~ 9400 5650
 NoConn ~ 9400 5750
+$Comp
+L CONN_01X01 J16
+U 1 1 593BCF25
+P 4700 2950
+F 0 "J16" H 4700 3050 50  0000 C CNN
+F 1 "CONN_01X01" V 4800 2950 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x01_Pitch2.54mm" H 4700 2950 50  0001 C CNN
+F 3 "" H 4700 2950 50  0001 C CNN
+	1    4700 2950
+	0    -1   -1   0   
+$EndComp
 $EndSCHEMATC
