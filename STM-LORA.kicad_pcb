@@ -1,14 +1,14 @@
-(kicad_pcb (version 4) (host pcbnew 4.0.6-e0-6349~53~ubuntu16.04.1)
+(kicad_pcb (version 4) (host pcbnew 4.0.6)
 
   (general
-    (links 111)
+    (links 114)
     (no_connects 0)
-    (area 83.744999 53.264999 140.410001 106.755001)
+    (area 81.834667 51.751 150.677572 109.173333)
     (thickness 1.6)
     (drawings 12)
-    (tracks 199)
+    (tracks 195)
     (zones 0)
-    (modules 57)
+    (modules 62)
     (nets 69)
   )
 
@@ -254,11 +254,71 @@
     (add_net VCC)
   )
 
-  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 594034FE) (tstamp 59401CF1)
+  (module VIA-0.6mm (layer F.Cu) (tedit 593BEDAA) (tstamp 5940F2D6)
+    (at 89.535 72.771)
+    (fp_text reference REF** (at 0 0.5) (layer F.SilkS) hide
+      (effects (font (size 0.127 0.127) (thickness 0.015)))
+    )
+    (fp_text value VIA-0.6mm (at 0 -0.5) (layer F.Fab) hide
+      (effects (font (size 0.127 0.127) (thickness 0.015)))
+    )
+    (pad 1 thru_hole circle (at 0 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu)
+      (net 7 GND) (zone_connect 2))
+  )
+
+  (module VIA-0.6mm (layer F.Cu) (tedit 593BEDAA) (tstamp 5940F2B9)
+    (at 94.361 72.898)
+    (fp_text reference REF** (at 0 0.5) (layer F.SilkS) hide
+      (effects (font (size 0.127 0.127) (thickness 0.015)))
+    )
+    (fp_text value VIA-0.6mm (at 0 -0.5) (layer F.Fab) hide
+      (effects (font (size 0.127 0.127) (thickness 0.015)))
+    )
+    (pad 1 thru_hole circle (at 0 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu)
+      (net 7 GND) (zone_connect 2))
+  )
+
+  (module VIA-0.6mm (layer F.Cu) (tedit 593BEDAA) (tstamp 5940F24B)
+    (at 94.869 69.977)
+    (fp_text reference REF** (at 0 0.5) (layer F.SilkS) hide
+      (effects (font (size 0.127 0.127) (thickness 0.015)))
+    )
+    (fp_text value VIA-0.6mm (at 0 -0.5) (layer F.Fab) hide
+      (effects (font (size 0.127 0.127) (thickness 0.015)))
+    )
+    (pad 1 thru_hole circle (at 0 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu)
+      (net 7 GND) (zone_connect 2))
+  )
+
+  (module VIA-0.6mm (layer F.Cu) (tedit 593BEDAA) (tstamp 5940F23E)
+    (at 98.044 72.517)
+    (fp_text reference REF** (at 0 0.5) (layer F.SilkS) hide
+      (effects (font (size 0.127 0.127) (thickness 0.015)))
+    )
+    (fp_text value VIA-0.6mm (at 0 -0.5) (layer F.Fab) hide
+      (effects (font (size 0.127 0.127) (thickness 0.015)))
+    )
+    (pad 1 thru_hole circle (at 0 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu)
+      (net 7 GND) (zone_connect 2))
+  )
+
+  (module VIA-0.6mm (layer F.Cu) (tedit 593BEDAA) (tstamp 5940F1AD)
+    (at 94.107 64.77)
+    (fp_text reference REF** (at 0 0.5) (layer F.SilkS) hide
+      (effects (font (size 0.127 0.127) (thickness 0.015)))
+    )
+    (fp_text value VIA-0.6mm (at 0 -0.5) (layer F.Fab) hide
+      (effects (font (size 0.127 0.127) (thickness 0.015)))
+    )
+    (pad 1 thru_hole circle (at 0 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu)
+      (net 7 GND) (zone_connect 2))
+  )
+
+  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 5940EF00) (tstamp 59401CF1)
     (at 138.557 102.87)
     (descr "Mounting Hole 2.2mm, no annular, M2, DIN965")
     (tags "mounting hole 2.2mm no annular m2 din965")
-    (fp_text reference REF** (at 0 -2.9) (layer F.SilkS)
+    (fp_text reference REF** (at 0 -2.9) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value "" (at 0 2.9) (layer F.Fab) hide
@@ -269,11 +329,11 @@
     (pad 1 np_thru_hole circle (at 0 0) (size 2.2 2.2) (drill 2.2) (layers *.Cu *.Mask))
   )
 
-  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 59403507) (tstamp 59401C1C)
+  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 5940EF0F) (tstamp 59401C1C)
     (at 85.471 102.87)
     (descr "Mounting Hole 2.2mm, no annular, M2, DIN965")
     (tags "mounting hole 2.2mm no annular m2 din965")
-    (fp_text reference REF** (at 0 -2.9) (layer F.SilkS)
+    (fp_text reference REF** (at 0 -2.9) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value "" (at 0 2.9) (layer F.Fab) hide
@@ -615,7 +675,7 @@
       (net 7 GND) (zone_connect 2))
   )
 
-  (module VIA-0.6mm (layer F.Cu) (tedit 593BECE6) (tstamp 593BED38)
+  (module VIA-0.6mm (layer F.Cu) (tedit 5940EFAA) (tstamp 593BED38)
     (at 94.361 72.771)
     (fp_text reference REF** (at 0 0.5) (layer F.SilkS) hide
       (effects (font (size 0.127 0.127) (thickness 0.015)))
@@ -623,8 +683,6 @@
     (fp_text value VIA-0.6mm (at 0 -0.5) (layer F.Fab) hide
       (effects (font (size 0.127 0.127) (thickness 0.015)))
     )
-    (pad 1 thru_hole circle (at 0 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu)
-      (zone_connect 2))
   )
 
   (module VIA-0.6mm (layer F.Cu) (tedit 593BEDB7) (tstamp 593BED31)
@@ -1944,11 +2002,11 @@
     )
   )
 
-  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 59401CE1) (tstamp 59401A35)
+  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 5940EEF8) (tstamp 59401A35)
     (at 127.254 78.105)
     (descr "Mounting Hole 2.2mm, no annular, M2, DIN965")
     (tags "mounting hole 2.2mm no annular m2 din965")
-    (fp_text reference REF** (at 0 -2.9) (layer F.SilkS)
+    (fp_text reference REF** (at 0 -2.9) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value MountingHole_2.2mm_M2_DIN965 (at 0 2.9) (layer F.Fab) hide
@@ -1988,13 +2046,9 @@
     (effects (font (size 1 1) (thickness 0.2)))
   )
 
-  (via (at 95.123 69.977) (size 0.6) (drill 0.4) (layers F.Cu B.Cu) (net 0))
   (via (at 99.568 70.104) (size 0.6) (drill 0.4) (layers F.Cu B.Cu) (net 0))
   (segment (start 128.27 67.31) (end 118.11 67.31) (width 0.7) (layer B.Cu) (net 7))
   (segment (start 107.285 58.39) (end 107.315 58.42) (width 0.7) (layer F.Cu) (net 7) (tstamp 58E31E7B) (status 30))
-  (via (at 98.425 73.025) (size 0.7) (drill 0.5) (layers F.Cu B.Cu) (net 7))
-  (segment (start 102.87 72.39) (end 99.06 72.39) (width 0.7) (layer F.Cu) (net 7) (tstamp 58E31DA0) (status 10))
-  (segment (start 99.06 72.39) (end 98.425 73.025) (width 0.7) (layer F.Cu) (net 7) (tstamp 58E31D9F))
   (segment (start 130.81 104.14) (end 130.81 97.79) (width 0.7) (layer B.Cu) (net 8))
   (segment (start 130.81 97.79) (end 130.81 104.14) (width 0.7) (layer F.Cu) (net 8) (status 30))
   (segment (start 135.255 60.325) (end 135.255 62.23) (width 0.7) (layer F.Cu) (net 8))
@@ -2597,27 +2651,23 @@
         (xy 98.633162 69.917201) (xy 98.632869 70.253067) (xy 96.645 68.265198) (xy 96.645 67.872463) (xy 96.677192 67.840327)
         (xy 96.819838 67.496799) (xy 96.820162 67.124833) (xy 96.678117 66.781057) (xy 96.415327 66.517808) (xy 96.071799 66.375162)
         (xy 95.699833 66.374838) (xy 95.356057 66.516883) (xy 95.092808 66.779673) (xy 94.950162 67.123201) (xy 94.949838 67.495167)
-        (xy 95.091883 67.838943) (xy 95.125 67.872118) (xy 95.125 68.58) (xy 95.182852 68.870839) (xy 95.297319 69.042151)
-        (xy 94.937833 69.041838) (xy 94.594057 69.183883) (xy 94.330808 69.446673) (xy 94.188162 69.790201) (xy 94.187838 70.162167)
-        (xy 94.203664 70.20047) (xy 94.166799 70.185162) (xy 93.794833 70.184838) (xy 93.451057 70.326883) (xy 93.417882 70.36)
-        (xy 92.002463 70.36) (xy 91.970327 70.327808) (xy 91.626799 70.185162) (xy 91.254833 70.184838) (xy 90.911057 70.326883)
-        (xy 90.647808 70.589673) (xy 90.505162 70.933201) (xy 90.504838 71.305167) (xy 90.646883 71.648943) (xy 90.909673 71.912192)
-        (xy 91.253201 72.054838) (xy 91.625167 72.055162) (xy 91.968943 71.913117) (xy 92.002118 71.88) (xy 93.417537 71.88)
-        (xy 93.449673 71.912192) (xy 93.766199 72.043626) (xy 93.568808 72.240673) (xy 93.426162 72.584201) (xy 93.425838 72.956167)
-        (xy 93.567883 73.299943) (xy 93.830673 73.563192) (xy 94.174201 73.705838) (xy 94.546167 73.706162) (xy 94.889943 73.564117)
-        (xy 95.153192 73.301327) (xy 95.295838 72.957799) (xy 95.296162 72.585833) (xy 95.154117 72.242057) (xy 94.891327 71.978808)
-        (xy 94.574801 71.847374) (xy 94.772192 71.650327) (xy 94.914838 71.306799) (xy 94.915162 70.934833) (xy 94.899336 70.89653)
-        (xy 94.936201 70.911838) (xy 95.308167 70.912162) (xy 95.651943 70.770117) (xy 95.915192 70.507327) (xy 96.057838 70.163799)
-        (xy 96.058131 69.827933) (xy 101.292649 75.062451) (xy 100.898285 74.798946) (xy 100.33 74.685907) (xy 99.761715 74.798946)
-        (xy 99.279946 75.120853) (xy 99.06 75.450026) (xy 98.840054 75.120853) (xy 98.358285 74.798946) (xy 97.79 74.685907)
-        (xy 97.221715 74.798946) (xy 96.739946 75.120853) (xy 96.71215 75.162452) (xy 96.703162 75.114683) (xy 96.56409 74.898559)
-        (xy 96.35189 74.753569) (xy 96.1 74.70256) (xy 94.4 74.70256) (xy 94.164683 74.746838) (xy 93.948559 74.88591)
-        (xy 93.803569 75.09811) (xy 93.789914 75.165541) (xy 93.760054 75.120853) (xy 93.278285 74.798946) (xy 92.71 74.685907)
-        (xy 92.141715 74.798946) (xy 91.659946 75.120853) (xy 91.432298 75.461553) (xy 91.365183 75.318642) (xy 90.936924 74.928355)
-        (xy 90.52689 74.758524) (xy 90.297 74.879845) (xy 90.043 74.879845) (xy 89.81311 74.758524) (xy 89.403076 74.928355)
-        (xy 89.105136 75.199878) (xy 89.018327 74.990302) (xy 88.839699 74.811673) (xy 88.60631 74.715) (xy 87.91575 74.715)
-        (xy 87.757 74.87375) (xy 87.503 74.87375) (xy 87.34425 74.715) (xy 86.65369 74.715) (xy 86.420301 74.811673)
-        (xy 86.241673 74.990302) (xy 86.145 75.223691) (xy 84.53 75.223691) (xy 84.53 59.427745) (xy 106.486861 59.427745)
+        (xy 95.091883 67.838943) (xy 95.125 67.872118) (xy 95.125 68.58) (xy 95.182852 68.870839) (xy 95.347599 69.117401)
+        (xy 101.292649 75.062451) (xy 100.898285 74.798946) (xy 100.33 74.685907) (xy 99.761715 74.798946) (xy 99.279946 75.120853)
+        (xy 99.06 75.450026) (xy 98.840054 75.120853) (xy 98.358285 74.798946) (xy 97.79 74.685907) (xy 97.221715 74.798946)
+        (xy 96.739946 75.120853) (xy 96.71215 75.162452) (xy 96.703162 75.114683) (xy 96.56409 74.898559) (xy 96.35189 74.753569)
+        (xy 96.1 74.70256) (xy 94.4 74.70256) (xy 94.164683 74.746838) (xy 93.948559 74.88591) (xy 93.803569 75.09811)
+        (xy 93.789914 75.165541) (xy 93.760054 75.120853) (xy 93.278285 74.798946) (xy 92.71 74.685907) (xy 92.141715 74.798946)
+        (xy 91.659946 75.120853) (xy 91.432298 75.461553) (xy 91.365183 75.318642) (xy 90.936924 74.928355) (xy 90.52689 74.758524)
+        (xy 90.297 74.879845) (xy 90.043 74.879845) (xy 89.81311 74.758524) (xy 89.403076 74.928355) (xy 89.105136 75.199878)
+        (xy 89.018327 74.990302) (xy 88.839699 74.811673) (xy 88.60631 74.715) (xy 87.91575 74.715) (xy 87.757 74.87375)
+        (xy 87.503 74.87375) (xy 87.34425 74.715) (xy 86.65369 74.715) (xy 86.420301 74.811673) (xy 86.241673 74.990302)
+        (xy 86.145 75.223691) (xy 84.53 75.223691) (xy 84.53 71.305167) (xy 90.504838 71.305167) (xy 90.646883 71.648943)
+        (xy 90.909673 71.912192) (xy 91.253201 72.054838) (xy 91.625167 72.055162) (xy 91.968943 71.913117) (xy 92.002118 71.88)
+        (xy 93.417537 71.88) (xy 93.449673 71.912192) (xy 93.793201 72.054838) (xy 94.165167 72.055162) (xy 94.508943 71.913117)
+        (xy 94.772192 71.650327) (xy 94.914838 71.306799) (xy 94.915162 70.934833) (xy 94.773117 70.591057) (xy 94.510327 70.327808)
+        (xy 94.166799 70.185162) (xy 93.794833 70.184838) (xy 93.451057 70.326883) (xy 93.417882 70.36) (xy 92.002463 70.36)
+        (xy 91.970327 70.327808) (xy 91.626799 70.185162) (xy 91.254833 70.184838) (xy 90.911057 70.326883) (xy 90.647808 70.589673)
+        (xy 90.505162 70.933201) (xy 90.504838 71.305167) (xy 84.53 71.305167) (xy 84.53 59.427745) (xy 106.486861 59.427745)
         (xy 106.560995 59.673864) (xy 107.098223 59.866965) (xy 107.668454 59.839778) (xy 108.069005 59.673864) (xy 108.143139 59.427745)
         (xy 107.315 58.599605) (xy 106.486861 59.427745) (xy 84.53 59.427745) (xy 84.53 58.203223) (xy 105.868035 58.203223)
         (xy 105.895222 58.773454) (xy 106.061136 59.174005) (xy 106.307255 59.248139) (xy 107.135395 58.42) (xy 107.494605 58.42)
@@ -2782,6 +2832,15 @@
     )
     (filled_polygon
       (pts
+        (xy 97.19654 74.769768) (xy 97.229015 74.797105) (xy 97.229244 74.797448) (xy 97.221715 74.798946) (xy 96.739946 75.120853)
+        (xy 96.71215 75.162452) (xy 96.703162 75.114683) (xy 96.56409 74.898559) (xy 96.35189 74.753569) (xy 96.1 74.70256)
+        (xy 94.4 74.70256) (xy 94.164683 74.746838) (xy 93.948559 74.88591) (xy 93.803569 75.09811) (xy 93.789914 75.165541)
+        (xy 93.760054 75.120853) (xy 93.695 75.077385) (xy 93.695 72.014061) (xy 93.793201 72.054838) (xy 94.165167 72.055162)
+        (xy 94.508943 71.913117) (xy 94.542118 71.88) (xy 94.884726 71.88)
+      )
+    )
+    (filled_polygon
+      (pts
         (xy 98.775808 69.573673) (xy 98.633162 69.917201) (xy 98.632838 70.289167) (xy 98.774883 70.632943) (xy 99.037673 70.896192)
         (xy 99.381201 71.038838) (xy 99.753167 71.039162) (xy 100.034418 70.922952) (xy 100.030162 70.933201) (xy 100.029838 71.305167)
         (xy 100.171883 71.648943) (xy 100.434673 71.912192) (xy 100.778201 72.054838) (xy 101.150167 72.055162) (xy 101.328183 71.981608)
@@ -2791,7 +2850,9 @@
         (xy 104.4622 72.517002) (xy 105.480198 73.535) (xy 98.155274 73.535) (xy 97.480774 72.691874) (xy 101.275881 72.691874)
         (xy 101.477632 73.102763) (xy 101.818322 73.390002) (xy 102.243 73.525) (xy 102.743 73.525) (xy 102.743 72.517)
         (xy 101.402046 72.517) (xy 101.275881 72.691874) (xy 97.480774 72.691874) (xy 95.84346 70.645232) (xy 95.810985 70.617895)
-        (xy 95.808363 70.61397) (xy 95.915192 70.507327) (xy 96.057838 70.163799) (xy 96.058162 69.791833) (xy 95.964437 69.565)
+        (xy 95.787401 70.582599) (xy 95.698444 70.52316) (xy 95.6166 70.454265) (xy 95.576136 70.441437) (xy 95.540839 70.417852)
+        (xy 95.435907 70.396979) (xy 95.333928 70.364649) (xy 95.291636 70.368282) (xy 95.25 70.36) (xy 94.542463 70.36)
+        (xy 94.510327 70.327808) (xy 94.166799 70.185162) (xy 93.794833 70.184838) (xy 93.695 70.226088) (xy 93.695 69.565)
         (xy 98.784496 69.565)
       )
     )
