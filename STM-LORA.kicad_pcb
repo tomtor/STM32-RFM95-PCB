@@ -3,7 +3,7 @@
   (general
     (links 117)
     (no_connects 0)
-    (area 81.834667 51.751 150.677572 109.173333)
+    (area 83.744999 53.264999 140.410001 106.755001)
     (thickness 1.6)
     (drawings 12)
     (tracks 194)
@@ -365,11 +365,11 @@
     (pad 1 np_thru_hole circle (at 0 0) (size 2.2 2.2) (drill 2.2) (layers *.Cu *.Mask))
   )
 
-  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 5940EF0F) (tstamp 59401C1C)
+  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 59426FDA) (tstamp 59401C1C)
     (at 85.598 102.87)
     (descr "Mounting Hole 2.2mm, no annular, M2, DIN965")
     (tags "mounting hole 2.2mm no annular m2 din965")
-    (fp_text reference REF** (at 0 -2.9) (layer F.SilkS) hide
+    (fp_text reference "" (at 0 -2.9) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value "" (at 0 2.9) (layer F.Fab) hide
@@ -380,14 +380,14 @@
     (pad 1 np_thru_hole circle (at 0 0) (size 2.2 2.2) (drill 2.2) (layers *.Cu *.Mask))
   )
 
-  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 594034E0) (tstamp 59401A7B)
+  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 59426EA1) (tstamp 59401A7B)
     (at 95.885 55.626)
     (descr "Mounting Hole 2.2mm, no annular, M2, DIN965")
     (tags "mounting hole 2.2mm no annular m2 din965")
     (fp_text reference "" (at 0 -2.9) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value MountingHole_2.2mm_M2_DIN965 (at 0 2.9) (layer F.Fab)
+    (fp_text value "" (at 0 2.9) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_circle (center 0 0) (end 1.9 0) (layer Cmts.User) (width 0.15))
@@ -395,14 +395,14 @@
     (pad 1 np_thru_hole circle (at 0 0) (size 2.2 2.2) (drill 2.2) (layers *.Cu *.Mask))
   )
 
-  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 594034EC) (tstamp 59401A6B)
+  (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 59427016) (tstamp 59401A6B)
     (at 138.049 55.626)
     (descr "Mounting Hole 2.2mm, no annular, M2, DIN965")
     (tags "mounting hole 2.2mm no annular m2 din965")
     (fp_text reference "" (at 0 -2.9) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value MountingHole_2.2mm_M2_DIN965 (at 0 2.9) (layer F.Fab) hide
+    (fp_text value "" (at 0 2.9) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_circle (center 0 0) (end 1.9 0) (layer Cmts.User) (width 0.15))
@@ -1345,7 +1345,7 @@
     )
   )
 
-  (module Diodes_THT:D_DO-35_SOD27_P2.54mm_Vertical_AnodeUp (layer F.Cu) (tedit 58E5F375) (tstamp 58DFA760)
+  (module Diodes_THT:D_DO-35_SOD27_P2.54mm_Vertical_AnodeUp (layer F.Cu) (tedit 59426F82) (tstamp 58DFA760)
     (at 137.16 64.77 90)
     (descr "D, DO-35_SOD27 series, Axial, Vertical, pin pitch=2.54mm, , length*diameter=4*2mm^2, , http://www.diodes.com/_files/packages/DO-35.pdf")
     (tags "D DO-35_SOD27 series Axial Vertical pin pitch 2.54mm  length 4mm diameter 2mm")
@@ -1368,7 +1368,7 @@
     (fp_line (start -1.35 1.55) (end 3.65 1.55) (layer F.CrtYd) (width 0.05))
     (fp_line (start 3.65 1.55) (end 3.65 -1.55) (layer F.CrtYd) (width 0.05))
     (fp_line (start 3.65 -1.55) (end -1.35 -1.55) (layer F.CrtYd) (width 0.05))
-    (fp_text user K (at -1.966371 0 90) (layer F.Fab)
+    (fp_text user "" (at -1.966371 0 90) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (pad 1 thru_hole rect (at 0 0 90) (size 1.6 1.6) (drill 0.8) (layers *.Cu *.Mask)
@@ -1382,7 +1382,7 @@
     )
   )
 
-  (module Socket_Strips:Socket_Strip_Straight_1x17_Pitch2.54mm (layer F.Cu) (tedit 58E60974) (tstamp 58E02086)
+  (module Socket_Strips:Socket_Strip_Straight_1x17_Pitch2.54mm (layer F.Cu) (tedit 59426FCC) (tstamp 58E02086)
     (at 128.27 104.14 270)
     (descr "Through hole straight socket strip, 1x17, 2.54mm pitch, single row")
     (tags "Through hole socket strip THT 1x17 2.54mm single row")
@@ -1390,7 +1390,7 @@
     (fp_text reference J3 (at -0.0508 19.2024 360) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X17 (at 0 42.97 270) (layer F.Fab) hide
+    (fp_text value "" (at 0 42.97 270) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 41.91) (layer F.Fab) (width 0.1))
@@ -1451,7 +1451,7 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm (layer F.Cu) (tedit 5940360C) (tstamp 58E02212)
+  (module Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm (layer F.Cu) (tedit 59426FFA) (tstamp 58E02212)
     (at 135.89 104.14 270)
     (descr "Through hole straight pin header, 1x03, 2.54mm pitch, single row")
     (tags "Through hole pin header THT 1x03 2.54mm single row")
@@ -1459,7 +1459,7 @@
     (fp_text reference J4 (at 1.016 -2.794 270) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X03 (at 0 7.41 270) (layer F.Fab) hide
+    (fp_text value "" (at 0 7.41 270) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 6.35) (layer F.Fab) (width 0.1))
@@ -1476,7 +1476,7 @@
     (fp_line (start -1.8 6.85) (end 1.8 6.85) (layer F.CrtYd) (width 0.05))
     (fp_line (start 1.8 6.85) (end 1.8 -1.8) (layer F.CrtYd) (width 0.05))
     (fp_line (start 1.8 -1.8) (end -1.8 -1.8) (layer F.CrtYd) (width 0.05))
-    (fp_text user %R (at 1.651 -2.54 270) (layer F.Fab) hide
+    (fp_text user "" (at 1.651 -2.54 270) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (pad 1 thru_hole rect (at 0 0 270) (size 1.7 1.7) (drill 1) (layers *.Cu *.Mask)
@@ -1492,7 +1492,7 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm (layer F.Cu) (tedit 58E249AF) (tstamp 58E09554)
+  (module Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm (layer F.Cu) (tedit 59426FA1) (tstamp 58E09554)
     (at 87.63 76.2 90)
     (descr "Through hole straight pin header, 1x03, 2.54mm pitch, single row")
     (tags "Through hole pin header THT 1x03 2.54mm single row")
@@ -1500,7 +1500,7 @@
     (fp_text reference J5 (at 0 -2.33 90) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X03 (at 0 7.41 180) (layer F.Fab)
+    (fp_text value "" (at 0 7.41 180) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 6.35) (layer F.Fab) (width 0.1))
@@ -1570,7 +1570,7 @@
     )
   )
 
-  (module Socket_Strips:Socket_Strip_Straight_1x14_Pitch2.54mm (layer F.Cu) (tedit 58E607EA) (tstamp 58E0956B)
+  (module Socket_Strips:Socket_Strip_Straight_1x14_Pitch2.54mm (layer F.Cu) (tedit 59426F26) (tstamp 58E0956B)
     (at 95.25 76.2 90)
     (descr "Through hole straight socket strip, 1x14, 2.54mm pitch, single row")
     (tags "Through hole socket strip THT 1x14 2.54mm single row")
@@ -1578,7 +1578,7 @@
     (fp_text reference J7 (at -0.1016 21.4884 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X14 (at 0 35.35 90) (layer F.Fab)
+    (fp_text value "" (at 0 35.35 90) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 34.29) (layer F.Fab) (width 0.1))
@@ -1633,7 +1633,7 @@
     )
   )
 
-  (module Socket_Strips:Socket_Strip_Straight_1x05_Pitch2.54mm (layer F.Cu) (tedit 58E60768) (tstamp 58E0B336)
+  (module Socket_Strips:Socket_Strip_Straight_1x05_Pitch2.54mm (layer F.Cu) (tedit 59426F11) (tstamp 58E0B336)
     (at 118.11 67.31 90)
     (descr "Through hole straight socket strip, 1x05, 2.54mm pitch, single row")
     (tags "Through hole socket strip THT 1x05 2.54mm single row")
@@ -1641,7 +1641,7 @@
     (fp_text reference J8 (at 0 6.2484 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X05 (at 0 12.49 90) (layer F.Fab)
+    (fp_text value "" (at 0 12.49 90) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 11.43) (layer F.Fab) (width 0.1))
@@ -1678,7 +1678,7 @@
     )
   )
 
-  (module Socket_Strips:Socket_Strip_Straight_1x05_Pitch2.54mm (layer F.Cu) (tedit 58E606E4) (tstamp 58E0B33F)
+  (module Socket_Strips:Socket_Strip_Straight_1x05_Pitch2.54mm (layer F.Cu) (tedit 59426F31) (tstamp 58E0B33F)
     (at 118.11 63.5 90)
     (descr "Through hole straight socket strip, 1x05, 2.54mm pitch, single row")
     (tags "Through hole socket strip THT 1x05 2.54mm single row")
@@ -1686,7 +1686,7 @@
     (fp_text reference J9 (at -0.0508 6.2484 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X05 (at 0 12.49 90) (layer F.Fab) hide
+    (fp_text value "" (at 0 12.49 90) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 11.43) (layer F.Fab) (width 0.1))
@@ -1723,7 +1723,7 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_2x07_Pitch2.54mm (layer F.Cu) (tedit 593BF45F) (tstamp 58E23643)
+  (module Pin_Headers:Pin_Header_Straight_2x07_Pitch2.54mm (layer F.Cu) (tedit 59426EFF) (tstamp 58E23643)
     (at 110.49 60.96 90)
     (descr "Through hole straight pin header, 2x07, 2.54mm pitch, double rows")
     (tags "Through hole pin header THT 2x07 2.54mm double row")
@@ -1731,7 +1731,7 @@
     (fp_text reference J10 (at 1.27 6.35 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_02X07 (at 1.27 17.63 90) (layer F.Fab)
+    (fp_text value "" (at 1.27 17.63 90) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 16.51) (layer F.Fab) (width 0.1))
@@ -1785,7 +1785,7 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_2x09_Pitch2.54mm (layer F.Cu) (tedit 58E60795) (tstamp 58E23659)
+  (module Pin_Headers:Pin_Header_Straight_2x09_Pitch2.54mm (layer F.Cu) (tedit 59426F4B) (tstamp 58E23659)
     (at 113.03 72.39 90)
     (descr "Through hole straight pin header, 2x09, 2.54mm pitch, double rows")
     (tags "Through hole pin header THT 2x09 2.54mm double row")
@@ -1793,7 +1793,7 @@
     (fp_text reference J11 (at 1.27 6.2484 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_02X09 (at 1.27 22.71 90) (layer F.Fab) hide
+    (fp_text value "" (at 1.27 22.71 90) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 21.59) (layer F.Fab) (width 0.1))
@@ -1855,7 +1855,7 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm (layer F.Cu) (tedit 58E60467) (tstamp 58E237DE)
+  (module Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm (layer F.Cu) (tedit 59426F53) (tstamp 58E237DE)
     (at 130.81 63.5 90)
     (descr "Through hole straight pin header, 1x02, 2.54mm pitch, single row")
     (tags "Through hole pin header THT 1x02 2.54mm single row")
@@ -1863,7 +1863,7 @@
     (fp_text reference J12 (at 0 2.54 90) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X02 (at 0 4.93 90) (layer F.Fab)
+    (fp_text value "" (at 0 4.93 90) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 3.81) (layer F.Fab) (width 0.1))
@@ -1891,7 +1891,7 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm (layer F.Cu) (tedit 58E6047E) (tstamp 58E237E4)
+  (module Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm (layer F.Cu) (tedit 59426F5F) (tstamp 58E237E4)
     (at 130.81 67.31 90)
     (descr "Through hole straight pin header, 1x02, 2.54mm pitch, single row")
     (tags "Through hole pin header THT 1x02 2.54mm single row")
@@ -1899,7 +1899,7 @@
     (fp_text reference J13 (at 0 2.54 90) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X02 (at 0 4.93 90) (layer F.Fab) hide
+    (fp_text value "" (at 0 4.93 90) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 3.81) (layer F.Fab) (width 0.1))
@@ -1927,7 +1927,7 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm (layer F.Cu) (tedit 58E6065F) (tstamp 58E237EA)
+  (module Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm (layer F.Cu) (tedit 59426EE5) (tstamp 58E237EA)
     (at 113.03 67.31 90)
     (descr "Through hole straight pin header, 1x02, 2.54mm pitch, single row")
     (tags "Through hole pin header THT 1x02 2.54mm single row")
@@ -1935,7 +1935,7 @@
     (fp_text reference J14 (at 0.6096 2.6416 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X02 (at 0 4.93 90) (layer F.Fab)
+    (fp_text value "" (at 0 4.93 90) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 3.81) (layer F.Fab) (width 0.1))
@@ -1963,7 +1963,7 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm (layer F.Cu) (tedit 58E604C7) (tstamp 58E2387D)
+  (module Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm (layer F.Cu) (tedit 59426EF0) (tstamp 58E2387D)
     (at 110.49 63.5 90)
     (descr "Through hole straight pin header, 1x03, 2.54mm pitch, single row")
     (tags "Through hole pin header THT 1x03 2.54mm single row")
@@ -1971,7 +1971,7 @@
     (fp_text reference J15 (at -0.254 2.794 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X03 (at 0 7.47 90) (layer F.Fab)
+    (fp_text value "" (at 0 7.47 90) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 6.35) (layer F.Fab) (width 0.1))
@@ -2001,15 +2001,15 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_1x01_Pitch2.54mm (layer F.Cu) (tedit 594038AB) (tstamp 593BCE6D)
+  (module Pin_Headers:Pin_Header_Straight_1x01_Pitch2.54mm (layer F.Cu) (tedit 59426ECB) (tstamp 593BCE6D)
     (at 86.868 55.753)
     (descr "Through hole straight pin header, 1x01, 2.54mm pitch, single row")
     (tags "Through hole pin header THT 1x01 2.54mm single row")
     (path /593BCF25)
-    (fp_text reference J16 (at 0 -2.33) (layer F.SilkS) hide
+    (fp_text reference "" (at 0 -2.33) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value CONN_01X01 (at 0 2.33) (layer F.Fab) hide
+    (fp_text value "" (at 0 2.33) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.27 -1.27) (end -1.27 1.27) (layer F.Fab) (width 0.1))
@@ -2026,7 +2026,7 @@
     (fp_line (start -1.8 1.8) (end 1.8 1.8) (layer F.CrtYd) (width 0.05))
     (fp_line (start 1.8 1.8) (end 1.8 -1.8) (layer F.CrtYd) (width 0.05))
     (fp_line (start 1.8 -1.8) (end -1.8 -1.8) (layer F.CrtYd) (width 0.05))
-    (fp_text user %R (at 0 -2.33) (layer F.Fab) hide
+    (fp_text user "" (at 0 -2.33) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (pad 1 thru_hole rect (at 0 0) (size 1.9 1.9) (drill 1.3) (layers *.Cu *.Mask)
