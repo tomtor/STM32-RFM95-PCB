@@ -1,4 +1,4 @@
-(kicad_pcb (version 4) (host pcbnew 4.0.6-e0-6349~53~ubuntu16.04.1)
+(kicad_pcb (version 4) (host pcbnew 4.0.6)
 
   (general
     (links 117)
@@ -366,7 +366,7 @@
   )
 
   (module Mounting_Holes:MountingHole_2.2mm_M2_DIN965 (layer F.Cu) (tedit 5940EF0F) (tstamp 59401C1C)
-    (at 85.471 102.87)
+    (at 85.598 102.87)
     (descr "Mounting Hole 2.2mm, no annular, M2, DIN965")
     (tags "mounting hole 2.2mm no annular m2 din965")
     (fp_text reference REF** (at 0 -2.9) (layer F.SilkS) hide
