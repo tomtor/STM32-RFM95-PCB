@@ -3,7 +3,7 @@
   (general
     (links 117)
     (no_connects 0)
-    (area 83.222999 51.878 140.932001 106.845)
+    (area 83.744999 53.264999 140.410001 106.755001)
     (thickness 1.6)
     (drawings 12)
     (tracks 194)
@@ -70,7 +70,7 @@
     (pad_drill 1.5)
     (pad_to_mask_clearance 0.2)
     (aux_axis_origin 0 0)
-    (visible_elements 7FFD7F7F)
+    (visible_elements 7FFF7F7F)
     (pcbplotparams
       (layerselection 0x010e0_80000001)
       (usegerberextensions false)
@@ -1267,12 +1267,12 @@
     )
   )
 
-  (module Socket_Strips:Socket_Strip_Straight_1x05_Pitch2.54mm (layer F.Cu) (tedit 58CD5446) (tstamp 58E0B33F)
+  (module Socket_Strips:Socket_Strip_Straight_1x05_Pitch2.54mm (layer F.Cu) (tedit 59C5F9FA) (tstamp 58E0B33F)
     (at 118.11 63.5 90)
     (descr "Through hole straight socket strip, 1x05, 2.54mm pitch, single row")
     (tags "Through hole socket strip THT 1x05 2.54mm single row")
     (path /58E0B40A)
-    (fp_text reference J9 (at 0 -2.33 90) (layer F.SilkS)
+    (fp_text reference J9 (at 0 -2.33 90) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value "" (at 0 12.49 90) (layer F.Fab)
@@ -1312,12 +1312,12 @@
     )
   )
 
-  (module Socket_Strips:Socket_Strip_Straight_1x05_Pitch2.54mm (layer F.Cu) (tedit 58CD5446) (tstamp 58E0B336)
+  (module Socket_Strips:Socket_Strip_Straight_1x05_Pitch2.54mm (layer F.Cu) (tedit 59C5F9CE) (tstamp 58E0B336)
     (at 118.11 67.31 90)
     (descr "Through hole straight socket strip, 1x05, 2.54mm pitch, single row")
     (tags "Through hole socket strip THT 1x05 2.54mm single row")
     (path /58E0ADB1)
-    (fp_text reference J8 (at 0 -2.33 90) (layer F.SilkS)
+    (fp_text reference J8 (at 0 -2.33 90) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value "" (at 0 12.49 90) (layer F.Fab)
@@ -1357,12 +1357,12 @@
     )
   )
 
-  (module Socket_Strips:Socket_Strip_Straight_1x14_Pitch2.54mm (layer F.Cu) (tedit 58CD5446) (tstamp 58E0956B)
+  (module Socket_Strips:Socket_Strip_Straight_1x14_Pitch2.54mm (layer F.Cu) (tedit 59C5F97F) (tstamp 58E0956B)
     (at 95.25 76.2 90)
     (descr "Through hole straight socket strip, 1x14, 2.54mm pitch, single row")
     (tags "Through hole socket strip THT 1x14 2.54mm single row")
     (path /58E0990E)
-    (fp_text reference J7 (at 0 -2.33 90) (layer F.SilkS)
+    (fp_text reference J7 (at 0 -2.33 90) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value "" (at 0 35.35 90) (layer F.Fab)
@@ -1542,12 +1542,12 @@
     )
   )
 
-  (module Socket_Strips:Socket_Strip_Straight_1x17_Pitch2.54mm (layer F.Cu) (tedit 58CD5446) (tstamp 58E02086)
+  (module Socket_Strips:Socket_Strip_Straight_1x17_Pitch2.54mm (layer F.Cu) (tedit 59C5FA0F) (tstamp 58E02086)
     (at 128.27 104.14 270)
     (descr "Through hole straight socket strip, 1x17, 2.54mm pitch, single row")
     (tags "Through hole socket strip THT 1x17 2.54mm single row")
     (path /58E01D61)
-    (fp_text reference J3 (at 0 -2.33 270) (layer F.SilkS)
+    (fp_text reference J3 (at 0 -2.33 270) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value "" (at 0 42.97 270) (layer F.Fab)
@@ -1651,7 +1651,7 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm (layer F.Cu) (tedit 59C568C5) (tstamp 58DFA507)
+  (module Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm (layer F.Cu) (tedit 59C5F7FA) (tstamp 58DFA507)
     (at 134.62 58.42 90)
     (descr "Through hole straight pin header, 1x02, 2.54mm pitch, single row")
     (tags "Through hole pin header THT 1x02 2.54mm single row")
@@ -1659,7 +1659,7 @@
     (fp_text reference J2 (at 0 -2.33 90) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value Solar (at 2.794 -0.508 180) (layer F.Fab)
+    (fp_text value Solar (at 2.794 -0.508 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -0.635 -1.27) (end 1.27 -1.27) (layer F.Fab) (width 0.1))
@@ -1691,7 +1691,7 @@
     )
   )
 
-  (module Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm (layer F.Cu) (tedit 59C568CB) (tstamp 58DFA501)
+  (module Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm (layer F.Cu) (tedit 59C5F804) (tstamp 58DFA501)
     (at 130.81 58.42 270)
     (descr "Through hole straight pin header, 1x02, 2.54mm pitch, single row")
     (tags "Through hole pin header THT 1x02 2.54mm single row")
@@ -1699,7 +1699,7 @@
     (fp_text reference J1 (at 0 -2.33 270) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value Batt (at -2.794 1.27 360) (layer F.Fab)
+    (fp_text value Batt (at -2.794 1.27 360) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -0.635 -1.27) (end 1.27 -1.27) (layer F.Fab) (width 0.1))
