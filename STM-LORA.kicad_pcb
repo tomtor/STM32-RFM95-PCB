@@ -3,7 +3,7 @@
   (general
     (links 117)
     (no_connects 0)
-    (area 83.744999 53.264999 140.410001 106.755001)
+    (area 83.222999 51.878 140.932001 106.845)
     (thickness 1.6)
     (drawings 12)
     (tracks 194)
@@ -1659,7 +1659,7 @@
     (fp_text reference J2 (at 0 -2.33 90) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value Solar (at 2.794 -0.508 180) (layer F.SilkS)
+    (fp_text value Solar (at 3.429 -0.762 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -0.635 -1.27) (end 1.27 -1.27) (layer F.Fab) (width 0.1))
@@ -1699,7 +1699,7 @@
     (fp_text reference J1 (at 0 -2.33 270) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value Batt (at -2.794 1.27 360) (layer F.SilkS)
+    (fp_text value Batt (at -3.429 1.778 360) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -0.635 -1.27) (end 1.27 -1.27) (layer F.Fab) (width 0.1))
@@ -2102,7 +2102,7 @@
   (gr_line (start 83.82 53.34) (end 83.82 106.68) (angle 90) (layer Edge.Cuts) (width 0.15))
   (gr_line (start 140.335 53.34) (end 83.82 53.34) (angle 90) (layer Edge.Cuts) (width 0.15))
   (gr_line (start 140.335 106.68) (end 140.335 53.34) (angle 90) (layer Edge.Cuts) (width 0.15))
-  (gr_text + (at 128.27 56.134) (layer F.SilkS)
+  (gr_text + (at 128.27 56.261) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.25)))
   )
   (gr_text - (at 132.715 56.388) (layer F.SilkS)
