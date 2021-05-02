@@ -3,6 +3,11 @@ STM32 Printed Circuit Board for creating IOT nodes with the RFM95 LORA chip
 
 See: https://www.thethingsnetwork.org/labs/story/a-cheap-stm32-arduino-node
 
+You can order this board here:
+
+https://aisler.net/p/CZGCIFFH
+
+
 Credits:
 
 https://github.com/myelin/myelin-kicad-libraries (STM32 module KiCad library)
