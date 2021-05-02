@@ -37,8 +37,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "STM32 RFM95 Proto Board"
-Date "2017-04-01"
-Rev "0.2"
+Date "2017-06-10"
+Rev "0.3"
 Comp "http://v7f.eu"
 Comment1 ""
 Comment2 ""
@@ -281,7 +281,6 @@ F 3 "" H 1800 4800 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 NoConn ~ 3900 4800
-NoConn ~ 4700 3150
 NoConn ~ 5800 3500
 NoConn ~ 5800 3600
 NoConn ~ 5800 3700
@@ -567,9 +566,9 @@ Wire Wire Line
 Wire Wire Line
 	6000 3400 6000 6500
 Wire Wire Line
-	1100 6500 6000 6500
+	6000 6500 1100 6500
 Wire Wire Line
-	1100 2050 1100 6500
+	1100 6500 1100 2050
 Wire Wire Line
 	1100 4050 1800 4050
 Wire Wire Line
@@ -812,20 +811,6 @@ F 3 "" H 8500 5050 50  0001 C CNN
 	1    8500 5050
 	1    0    0    -1  
 $EndComp
-NoConn ~ 7150 4950
-NoConn ~ 7150 5050
-NoConn ~ 7150 5150
-NoConn ~ 7150 5250
-NoConn ~ 7150 5350
-NoConn ~ 7150 5450
-NoConn ~ 7150 5550
-NoConn ~ 7650 4950
-NoConn ~ 7650 5050
-NoConn ~ 7650 5150
-NoConn ~ 7650 5250
-NoConn ~ 7650 5350
-NoConn ~ 7650 5450
-NoConn ~ 7650 5550
 NoConn ~ 7750 4950
 NoConn ~ 7750 5050
 NoConn ~ 7750 5550
@@ -835,22 +820,47 @@ NoConn ~ 7750 6250
 NoConn ~ 8300 4950
 NoConn ~ 8300 5050
 NoConn ~ 8300 5150
-NoConn ~ 8900 4950
-NoConn ~ 8900 5050
-NoConn ~ 8900 5150
-NoConn ~ 8900 5250
-NoConn ~ 8900 5350
-NoConn ~ 8900 5450
-NoConn ~ 8900 5550
-NoConn ~ 8900 5650
-NoConn ~ 8900 5750
-NoConn ~ 9400 4950
-NoConn ~ 9400 5050
-NoConn ~ 9400 5150
-NoConn ~ 9400 5250
-NoConn ~ 9400 5350
-NoConn ~ 9400 5450
-NoConn ~ 9400 5550
-NoConn ~ 9400 5650
-NoConn ~ 9400 5750
+$Comp
+L CONN_01X01 J16
+U 1 1 593BCF25
+P 4700 2950
+F 0 "J16" H 4700 3050 50  0000 C CNN
+F 1 "CONN_01X01" V 4800 2950 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x01_Pitch2.54mm" H 4700 2950 50  0001 C CNN
+F 3 "" H 4700 2950 50  0001 C CNN
+	1    4700 2950
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	8900 4950 9400 4950
+Wire Wire Line
+	8900 5050 9400 5050
+Wire Wire Line
+	9400 5150 8900 5150
+Wire Wire Line
+	8900 5250 9400 5250
+Wire Wire Line
+	9400 5350 8900 5350
+Wire Wire Line
+	8900 5450 9400 5450
+Wire Wire Line
+	9400 5550 8900 5550
+Wire Wire Line
+	8900 5650 9400 5650
+Wire Wire Line
+	8900 5750 9400 5750
+Wire Wire Line
+	7150 4950 7650 4950
+Wire Wire Line
+	7650 5050 7150 5050
+Wire Wire Line
+	7150 5150 7650 5150
+Wire Wire Line
+	7150 5250 7650 5250
+Wire Wire Line
+	7150 5350 7650 5350
+Wire Wire Line
+	7650 5450 7150 5450
+Wire Wire Line
+	7150 5550 7650 5550
 $EndSCHEMATC
