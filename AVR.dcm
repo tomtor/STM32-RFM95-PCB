@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP AVR128DB28
+D 24MHz, 128kB Flash, 4kB Boot, 16kB SRAM, 512B EEPROM, SOIC-28
+K AVR 8/16bit Microcontroller AVR
+F https://www.microchip.com/content/dam/mchp/documents/MCU08/ProductDocuments/DataSheets/AVR128DB28-32-48-64-DataSheet-DS40002247A.pdf
+$ENDCMP
+#
+#End Doc Library
