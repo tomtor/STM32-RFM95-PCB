@@ -641,4 +641,78 @@ F 3 "" H 8450 5500 50  0001 C CNN
 	1    8450 5500
 	-1   0    0    1   
 $EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 612210DB
+P 8650 4850
+F 0 "#PWR?" H 8650 4600 50  0001 C CNN
+F 1 "GND" H 8650 4700 50  0000 C CNN
+F 2 "" H 8650 4850 50  0000 C CNN
+F 3 "" H 8650 4850 50  0000 C CNN
+	1    8650 4850
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 612216D6
+P 8650 6150
+F 0 "#PWR?" H 8650 5900 50  0001 C CNN
+F 1 "GND" H 8650 6000 50  0000 C CNN
+F 2 "" H 8650 6150 50  0000 C CNN
+F 3 "" H 8650 6150 50  0000 C CNN
+	1    8650 6150
+	0    -1   -1   0   
+$EndComp
+Text Label 7250 4850 2    60   ~ 0
+3V3
+Text Label 7250 6150 2    60   ~ 0
+3V3
+Text Label 8650 4950 0    50   ~ 0
+A6
+Text Label 8650 5050 0    50   ~ 0
+A5
+Text Label 8650 5150 0    50   ~ 0
+A4
+Text Label 8650 5250 0    50   ~ 0
+A3
+Text Label 8650 5350 0    50   ~ 0
+A2
+Text Label 8650 5450 0    50   ~ 0
+A1
+Text Label 8650 5550 0    50   ~ 0
+A0
+Text Label 8650 5650 0    60   ~ 0
+3V3
+Text Label 8650 5750 0    50   ~ 0
+UPDI
+Text Label 8650 5850 0    50   ~ 0
+F6
+Text Label 8650 5950 0    50   ~ 0
+F1
+Text Label 8650 6050 0    50   ~ 0
+F0
+Text Label 7250 4950 2    50   ~ 0
+A7
+Text Label 7250 5050 2    50   ~ 0
+C0
+Text Label 7250 5150 2    50   ~ 0
+C1
+Text Label 7250 5250 2    50   ~ 0
+C2
+Text Label 7250 5350 2    50   ~ 0
+C3
+Text Label 7250 5450 2    50   ~ 0
+D1
+Text Label 7250 5550 2    50   ~ 0
+D2
+Text Label 7250 5650 2    50   ~ 0
+D3
+Text Label 7250 5750 2    50   ~ 0
+D4
+Text Label 7250 5850 2    50   ~ 0
+D5
+Text Label 7250 5950 2    50   ~ 0
+D6
+Text Label 7250 6050 2    50   ~ 0
+D7
 $EndSCHEMATC
