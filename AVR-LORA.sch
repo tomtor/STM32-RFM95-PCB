@@ -758,56 +758,10 @@ F 3 "https://www.mouser.com/datasheet/2/3/C3BQ-2010323.pdf" H 4300 1400 50  0001
 	1    4300 1400
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:C C4
-U 1 1 61227F49
-P 4500 1650
-F 0 "C4" H 4615 1696 50  0000 L CNN
-F 1 "20pF" H 4615 1605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric" H 4538 1500 50  0001 C CNN
-F 3 "~" H 4500 1650 50  0001 C CNN
-	1    4500 1650
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C C3
-U 1 1 61228826
-P 4100 1650
-F 0 "C3" H 4215 1696 50  0000 L CNN
-F 1 "20pF" H 4215 1605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric" H 4138 1500 50  0001 C CNN
-F 3 "~" H 4100 1650 50  0001 C CNN
-	1    4100 1650
-	1    0    0    -1  
-$EndComp
 Text Label 4100 950  2    50   ~ 0
 A0
-$Comp
-L power:GND #PWR07
-U 1 1 6122D62F
-P 4100 1800
-F 0 "#PWR07" H 4100 1550 50  0001 C CNN
-F 1 "GND" H 4100 1650 50  0000 C CNN
-F 2 "" H 4100 1800 50  0000 C CNN
-F 3 "" H 4100 1800 50  0000 C CNN
-	1    4100 1800
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR08
-U 1 1 6122DCD0
-P 4500 1800
-F 0 "#PWR08" H 4500 1550 50  0001 C CNN
-F 1 "GND" H 4500 1650 50  0000 C CNN
-F 2 "" H 4500 1800 50  0000 C CNN
-F 3 "" H 4500 1800 50  0000 C CNN
-	1    4500 1800
-	1    0    0    -1  
-$EndComp
 Text Notes 4600 2150 0    50   ~ 0
 Optional external crystals
-Wire Wire Line
-	4500 1400 4500 1500
 $Comp
 L Jumper:SolderJumper_2_Open JP1
 U 1 1 6123888A
@@ -837,7 +791,6 @@ F 3 "~" H 4650 1150 50  0001 C CNN
 	1    4650 1150
 	1    0    0    -1  
 $EndComp
-Connection ~ 4500 1400
 Wire Wire Line
 	4500 950  4500 1150
 Connection ~ 4500 1150
@@ -849,9 +802,6 @@ Wire Wire Line
 	4450 1400 4500 1400
 Wire Wire Line
 	4150 1400 4100 1400
-Connection ~ 4100 1400
-Wire Wire Line
-	4100 1400 4100 1500
 $Comp
 L Device:Crystal Y2
 U 1 1 6124AB95
@@ -863,54 +813,8 @@ F 3 "https://abracon.com/Resonators/AB38T.pdf" H 5800 1400 50  0001 C CNN
 	1    5800 1400
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:C C6
-U 1 1 6124AFC7
-P 6000 1650
-F 0 "C6" H 6115 1696 50  0000 L CNN
-F 1 "12pF" H 6115 1605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric" H 6038 1500 50  0001 C CNN
-F 3 "~" H 6000 1650 50  0001 C CNN
-	1    6000 1650
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C C5
-U 1 1 6124AFD1
-P 5600 1650
-F 0 "C5" H 5715 1696 50  0000 L CNN
-F 1 "12pF" H 5715 1605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric" H 5638 1500 50  0001 C CNN
-F 3 "~" H 5600 1650 50  0001 C CNN
-	1    5600 1650
-	1    0    0    -1  
-$EndComp
 Text Label 5600 950  2    50   ~ 0
 F0
-$Comp
-L power:GND #PWR09
-U 1 1 6124AFDC
-P 5600 1800
-F 0 "#PWR09" H 5600 1550 50  0001 C CNN
-F 1 "GND" H 5600 1650 50  0000 C CNN
-F 2 "" H 5600 1800 50  0000 C CNN
-F 3 "" H 5600 1800 50  0000 C CNN
-	1    5600 1800
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR010
-U 1 1 6124AFE6
-P 6000 1800
-F 0 "#PWR010" H 6000 1550 50  0001 C CNN
-F 1 "GND" H 6000 1650 50  0000 C CNN
-F 2 "" H 6000 1800 50  0000 C CNN
-F 3 "" H 6000 1800 50  0000 C CNN
-	1    6000 1800
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6000 1400 6000 1500
 $Comp
 L Jumper:SolderJumper_2_Open JP3
 U 1 1 6124AFF1
@@ -940,7 +844,6 @@ F 3 "~" H 6150 1150 50  0001 C CNN
 	1    6150 1150
 	1    0    0    -1  
 $EndComp
-Connection ~ 6000 1400
 Wire Wire Line
 	6000 950  6000 1150
 Connection ~ 6000 1150
@@ -952,11 +855,58 @@ Wire Wire Line
 	5950 1400 6000 1400
 Wire Wire Line
 	5650 1400 5600 1400
-Connection ~ 5600 1400
-Wire Wire Line
-	5600 1400 5600 1500
 Text Label 4800 1150 0    50   ~ 0
 CA1
 Text Label 6300 1150 0    50   ~ 0
 CF1
+Connection ~ 4500 1400
+Wire Wire Line
+	4500 1400 4500 1500
+Connection ~ 4100 1400
+Wire Wire Line
+	4100 1400 4100 1500
+$Comp
+L power:GND #PWR07
+U 1 1 6122D62F
+P 4100 1800
+F 0 "#PWR07" H 4100 1550 50  0001 C CNN
+F 1 "GND" H 4100 1650 50  0000 C CNN
+F 2 "" H 4100 1800 50  0000 C CNN
+F 3 "" H 4100 1800 50  0000 C CNN
+	1    4100 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR08
+U 1 1 6122DCD0
+P 4500 1800
+F 0 "#PWR08" H 4500 1550 50  0001 C CNN
+F 1 "GND" H 4500 1650 50  0000 C CNN
+F 2 "" H 4500 1800 50  0000 C CNN
+F 3 "" H 4500 1800 50  0000 C CNN
+	1    4500 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C4
+U 1 1 61227F49
+P 4500 1650
+F 0 "C4" H 4615 1696 50  0000 L CNN
+F 1 "20pF" H 4615 1605 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 4538 1500 50  0001 C CNN
+F 3 "~" H 4500 1650 50  0001 C CNN
+	1    4500 1650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C3
+U 1 1 61228826
+P 4100 1650
+F 0 "C3" H 4215 1696 50  0000 L CNN
+F 1 "20pF" H 4215 1605 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 4138 1500 50  0001 C CNN
+F 3 "~" H 4100 1650 50  0001 C CNN
+	1    4100 1650
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
