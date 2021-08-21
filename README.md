@@ -15,6 +15,8 @@ Note that most components are optional:
 - MCP1700 regulator with 1uA idle current
 - Schottky diode for charging NiMH batteriesfrom a solar panel
 
+Aisler link for producing this board: https://aisler.net/p/EAZHDDHF
+
 # STM32-RFM95-PCB
 STM32 Printed Circuit Board for creating IOT nodes with the RFM95 LORA chip
 
