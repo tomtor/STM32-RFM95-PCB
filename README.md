@@ -3,7 +3,7 @@ AVR Printed Circuit Board for creating IOT nodes with the RFM95 LORA chip
 
 ![3D rendering](AVR-LORA.png)
 
-Schema: https://github.com/tomtor/ESPTiny/raw/master/ESPTiny.pdf
+Schema: https://github.com/tomtor/STM32-RFM95-PCB/raw/master/AVR-LORA.pdf
 
 Note that most components are optional:
 
