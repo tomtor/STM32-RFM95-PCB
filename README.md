@@ -14,6 +14,7 @@ Note that most components are optional:
 - 24MHz crystal
 - MCP1700 regulator with 1uA idle current
 - Schottky diode for charging NiMH batteries from a solar panel
+- Voltage divider for measuring battery voltage
 
 Aisler link for producing this board: https://aisler.net/p/EAZHDDHF
 
