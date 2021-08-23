@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 1 1
 Title "AVR RFM95 Board"
 Date "2021-08-17"
-Rev "0.1"
+Rev "1.0"
 Comp "http://v7f.eu"
 Comment1 ""
 Comment2 ""
