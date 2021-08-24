@@ -234,7 +234,7 @@ Connection ~ 8250 2150
 Wire Wire Line
 	8000 2150 8000 1850
 $Comp
-L STM-LORA-rescue:CONN_01X01 J3
+L Connector:Conn_Coaxial J3
 U 1 1 593BCF25
 P 4700 2950
 F 0 "J3" H 4700 3050 50  0000 C CNN
@@ -941,4 +941,15 @@ Text Notes 8350 3350 0    50   ~ 0
 Optional voltage divider\nfor ADC Battery
 Text Notes 1100 2550 0    50   ~ 0
 C7/C9/C11 are optional
+$Comp
+L power:GND #PWR?
+U 1 1 61256928
+P 4900 2950
+F 0 "#PWR?" H 4900 2700 50  0001 C CNN
+F 1 "GND" H 4900 2800 50  0000 C CNN
+F 2 "" H 4900 2950 50  0000 C CNN
+F 3 "" H 4900 2950 50  0000 C CNN
+	1    4900 2950
+	0    -1   -1   0   
+$EndComp
 $EndSCHEMATC
