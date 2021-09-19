@@ -5,8 +5,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "AVR RFM95 Board"
-Date "2021-08-17"
-Rev "1.0"
+Date "2021-09-19"
+Rev "1.1"
 Comp "http://v7f.eu"
 Comment1 ""
 Comment2 ""
@@ -760,7 +760,7 @@ F 3 "https://www.mouser.com/datasheet/2/3/C3BQ-2010323.pdf" H 4300 1400 50  0001
 $EndComp
 Text Label 4100 950  2    50   ~ 0
 A1
-Text Notes 5050 1700 0    50   ~ 0
+Text Notes 4600 700  0    50   ~ 0
 Optional external crystals
 $Comp
 L Jumper:SolderJumper_2_Open JP1
@@ -942,14 +942,60 @@ Optional voltage divider\nfor ADC Battery
 Text Notes 1100 2550 0    50   ~ 0
 C7/C9/C11 are optional
 $Comp
-L power:GND #PWR?
+L power:GND #PWR09
 U 1 1 61256928
 P 4900 2950
-F 0 "#PWR?" H 4900 2700 50  0001 C CNN
+F 0 "#PWR09" H 4900 2700 50  0001 C CNN
 F 1 "GND" H 4900 2800 50  0000 C CNN
 F 2 "" H 4900 2950 50  0000 C CNN
 F 3 "" H 4900 2950 50  0000 C CNN
 	1    4900 2950
 	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:C C6
+U 1 1 6147B2E9
+P 6000 1550
+F 0 "C6" H 6115 1596 50  0000 L CNN
+F 1 "10pF" H 6115 1505 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 6038 1400 50  0001 C CNN
+F 3 "~" H 6000 1550 50  0001 C CNN
+	1    6000 1550
+	1    0    0    -1  
+$EndComp
+Connection ~ 6000 1400
+$Comp
+L Device:C C5
+U 1 1 6147C02E
+P 5600 1550
+F 0 "C5" H 5350 1600 50  0000 L CNN
+F 1 "10pF" H 5300 1500 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 5638 1400 50  0001 C CNN
+F 3 "~" H 5600 1550 50  0001 C CNN
+	1    5600 1550
+	1    0    0    -1  
+$EndComp
+Connection ~ 5600 1400
+$Comp
+L power:GND #PWR0103
+U 1 1 6147EC70
+P 5600 1700
+F 0 "#PWR0103" H 5600 1450 50  0001 C CNN
+F 1 "GND" H 5600 1550 50  0000 C CNN
+F 2 "" H 5600 1700 50  0000 C CNN
+F 3 "" H 5600 1700 50  0000 C CNN
+	1    5600 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0104
+U 1 1 614806B9
+P 6000 1700
+F 0 "#PWR0104" H 6000 1450 50  0001 C CNN
+F 1 "GND" H 6000 1550 50  0000 C CNN
+F 2 "" H 6000 1700 50  0000 C CNN
+F 3 "" H 6000 1700 50  0000 C CNN
+	1    6000 1700
+	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
