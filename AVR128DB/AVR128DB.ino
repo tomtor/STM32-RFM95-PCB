@@ -6,7 +6,6 @@
 
 #include <avr/sleep.h>
 
-
 void RTC_init(void)
 {
   /* Initialize RTC: */
