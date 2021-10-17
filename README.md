@@ -1,7 +1,7 @@
 # AVR128DB28
 AVR Printed Circuit Board for creating IOT nodes with the RFM95 LORA chip
 
-![3D rendering](AVR-LORA.png)
+![3D rendering](AVR-LORA-805.jpg)
 
 Schema: https://github.com/tomtor/STM32-RFM95-PCB/raw/master/AVR-LORA.pdf
 
@@ -16,7 +16,9 @@ Note that most components are optional:
 - Schottky diode for charging NiMH batteries from a solar panel
 - Voltage divider for measuring battery voltage
 
-Aisler link for producing this board: https://aisler.net/p/EAZHDDHF
+Aisler link for producing 1206 board: https://aisler.net/p/EAZHDDHF
+
+Aisler link for producing 0805 board: https://aisler.net/p/ZRKAROVP
 
 # STM32-RFM95-PCB
 STM32 Printed Circuit Board for creating IOT nodes with the RFM95 LORA chip
