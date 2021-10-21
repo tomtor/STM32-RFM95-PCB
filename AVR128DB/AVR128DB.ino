@@ -2,7 +2,18 @@
 
 #define ON_TIME   4
 
-#define USE_OSC 0
+#define USE_OSC 1
+
+// Slowdown 2 sec every 24 hours:
+// 24 * 3600 / 2 = 43200 ticks with 2 second interval in 24 hours.
+// Adjustment is in steps of 2 seconds (a tick increments the clock with 2 seconds).
+
+#if USE_OSC
+#define ADJUST -(43200/46) // about 100s slow each 24 hrs
+#else
+#define ADJUST 17200 // About 5s fast in 24hrs
+#endif
+
 
 #include <avr/sleep.h>
 
@@ -38,21 +49,29 @@ ISR(RTC_PIT_vect)
 {
   if (ticks)
     ticks--;
+
   RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
 }
 
 
 volatile uint8_t sec2s, hours, minutes; // 2s ticks
 
+
 ISR(RTC_CNT_vect)
 {
   static unsigned int adjust_ticks;
-
-  // Our clock is almost 1 sec too fast every 24 hours:
-  // 24 * 3600 / 2 = 43200 for exactly 1 sec too fast
-  if (++adjust_ticks == 45000)
+#if ADJUST > 0
+  if (++adjust_ticks == ADJUST) {
     adjust_ticks = 0;
-  else {
+  } else {
+#elif ADJUST < 0
+  if (++adjust_ticks >= -ADJUST && sec2s == 2) { // Do not skip the 0s beat, adjust at 2s beat, skips 4s beat
+    adjust_ticks = 0;
+    sec2s = 6;
+  } else {
+#else
+  {
+#endif
     if (sec2s < 58)
       sec2s += 2;
     else {
@@ -201,6 +220,10 @@ void setup() {
   sleepDelay(5000);
 
   getBandgap(); // drop first
+
+//  while (1) {
+//    digitalWriteFast(led, (sec2s & 0x2) ? HIGH : LOW);
+//  }
 }
 
 
