@@ -1,6 +1,7 @@
 (sym_lib_table
-  (lib (name STM-LORA-rescue)(type Legacy)(uri ${KIPRJMOD}/STM-LORA-rescue.lib)(options "")(descr ""))
-  (lib (name stm32f103c8t6-module-china)(type Legacy)(uri ${KIPRJMOD}/STM32China/stm32f103c8t6-module-china.lib)(options "")(descr ""))
-  (lib (name RFM95)(type Legacy)(uri ${KIPRJMOD}/RFM/RFM95.lib)(options "")(descr ""))
-  (lib (name AVR)(type Legacy)(uri ${KIPRJMOD}/AVR.lib)(options "")(descr ""))
+  (version 7)
+  (lib (name "STM-LORA-rescue")(type "Legacy")(uri "${KIPRJMOD}/STM-LORA-rescue.lib")(options "")(descr ""))
+  (lib (name "stm32f103c8t6-module-china")(type "KiCad")(uri "${KIPRJMOD}/STM32China/stm32f103c8t6-module-china.kicad_sym")(options "")(descr ""))
+  (lib (name "RFM95")(type "Legacy")(uri "${KIPRJMOD}/RFM/RFM95.lib")(options "")(descr ""))
+  (lib (name "AVR")(type "Legacy")(uri "${KIPRJMOD}/AVR.lib")(options "")(descr ""))
 )
