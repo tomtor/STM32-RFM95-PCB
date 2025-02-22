@@ -4045,6 +4045,10 @@
 		(at 147.32 96.52)
 		(uuid "649de7eb-b0ea-4f1b-a6ef-cdf960783e7a")
 	)
+	(no_connect
+		(at 198.12 34.29)
+		(uuid "e5bdf68e-33c2-4936-b9c6-d8ca24db8a2c")
+	)
 	(wire
 		(pts
 			(xy 76.2 71.12) (xy 76.2 67.31)
