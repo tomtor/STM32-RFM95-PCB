@@ -6,8 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "AVR RFM95 Board")
-		(date "2021-09-19")
-		(rev "1.1")
+		(date "2025-02-23")
+		(rev "1.2")
 		(company "http://v7f.eu")
 	)
 	(lib_symbols
