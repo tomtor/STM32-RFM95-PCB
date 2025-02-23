@@ -137,7 +137,7 @@ unsigned int getBandgap ()
 #if 1
 unsigned int getBattery ()
 {
-  unsigned int val = analogRead(PIN_PA3);
+  unsigned int val = analogRead(PIN_PD1);
 
   // 3.0v regulator with voltage divider (820k/820k):
   const float Vref = 3000,
