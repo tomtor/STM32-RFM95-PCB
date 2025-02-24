@@ -96,6 +96,9 @@ void sleepDelay(uint16_t n)
 {
   uint8_t period;
   uint16_t cticks;
+
+  // Before sleeping, disable ADC
+  ADC0.CTRLA &= ~ADC_ENABLE_bm; // Very important on the tinyAVR 2-series
   
   if (n < 100) {
       period = RTC_PERIOD_CYC8_gc; // 1/4 ms
@@ -119,11 +122,17 @@ void sleepDelay(uint16_t n)
   while (RTC.PITSTATUS & RTC_CTRLBUSY_bm)  // Wait for new settings to synchronize
     ;
   ticks = cticks;
+  uint32_t start = millis();
 
   while (ticks)
     sleep_cpu();
+  
+  set_millis(start + n);
 
   RTC.PITCTRLA = 0;    /* Disable PIT counter */
+
+  // upon waking if you plan to use the ADC
+  ADC0.CTRLA |= ~ADC_ENABLE_bm;
 }
 
 #if 1
