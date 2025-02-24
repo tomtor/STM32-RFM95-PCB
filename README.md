@@ -29,7 +29,11 @@ Aisler link for producing 0805 board: https://aisler.net/p/ZRKAROVP
 # STM32-RFM95-PCB
 STM32 Printed Circuit Board for creating IOT nodes with the RFM95 LORA chip
 
-See: https://www.thethingsnetwork.org/labs/story/a-cheap-stm32-arduino-node
+![3D rendering](STM-LORA.png)
+
+See:
+- https://www.thethingsnetwork.org/labs/story/a-cheap-stm32-arduino-node
+- https://gist.github.com/tomtor/c754355f1b98370e78b4025f236d990e (Arduino sketch)
 
 You can order this board here:
 
