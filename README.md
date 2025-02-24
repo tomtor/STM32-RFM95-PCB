@@ -1,5 +1,11 @@
 # AVR128DB28
-AVR Printed Circuit Board for creating IOT nodes with the RFM95 LORA chip
+AVR Printed Circuit Board for creating IOT nodes with the RFM95 LORA chip.
+
+See:
+- https://www.thethingsnetwork.org/forum/t/avr128db28-pcb-with-rfm95/50864
+- https://www.thethingsnetwork.org/labs/story/a-cheap-stm32-arduino-node
+
+for background and software samples.
 
 ![3D rendering](AVR-LORA-805.jpg)
 
