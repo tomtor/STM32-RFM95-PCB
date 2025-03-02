@@ -1,15 +1,21 @@
+/*
+This example AVR128DB script for LORA counts events on a specified pin and sends the count with LoraWAN.
+
+The script is tuned for low power consumption (2 microampere sleep current)
+
+Tom Vijlbrief (C) 2025
+*/
+
 #include <arduino_lmic.h>
 #include <arduino_lmic_hal_boards.h>
 #include <arduino_lmic_hal_configuration.h>
 #include <arduino_lmic_lorawan_compliance.h>
 #include <arduino_lmic_user_configuration.h>
-#include <lmic.h>
-
-#include <avr/sleep.h>
 
 #include <lmic.h>
 #include <hal/hal.h>
-#include <SPI.h>
+
+#include <avr/sleep.h>
 
 #define LED       	PIN_PA7
 
@@ -17,27 +23,25 @@
 
 #define GET_BATTERY	0 // Read battery when using a voltage regulator
 
-//#define USE_LORA // Activate LORA RFM95 chip
+#define USE_LORA // Activate LORA RFM95 chip
 
-//#include <SoftwareSerial.h>
-//SoftwareSerial MySerial(PIN_PA3, PIN_PA2); // RX, TX
 #undef Serial
-#define Serial      Serial1
+#define Serial      Serial1 // I use serial port 1 (C0/C1 = Tx/Rx)
 #define SERIAL_OUT  PIN_PC0
 
-unsigned TX_INTERVAL = 60;
+unsigned TX_INTERVAL = 900;
 
 #define ON_TIME   4 // LED ON Time in ms
 
 #include "my_lora.h"
 
 //static const u1_t APPEUI[8] = {  }; // reversed 8 bytes of AppEUI registered with ttnctl
-void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
+void os_getArtEui (u1_t* buf) { memcpy(buf, APPEUI, 8);}
 
 //static const unsigned char APPKEY[16] = {  }; // non-reversed 16 bytes of the APPKEY used when registering a device with ttnctl register DevEUI AppKey
-void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
+void os_getDevKey (u1_t* buf) {  memcpy(buf, APPKEY, 16);}
 
-static u1_t DEVEUI[8]={ 0 };
+static u1_t DEVEUI[8]={ };
 void os_getDevEui (u1_t* buf) { memcpy(buf, DEVEUI, 8);}
 
 void fillDEVEUI (u1_t* buf) {
@@ -58,10 +62,12 @@ void fillDEVEUI (u1_t* buf) {
 
 struct {
   unsigned short temp;
-  unsigned short pres;
+  unsigned short rain;
   byte power;
   byte rate2;
 } mydata;
+
+volatile unsigned counter;  // Counts pin transitions to low
 
 static osjob_t sendjob;
 
@@ -78,9 +84,11 @@ void do_send(osjob_t* j){
     if (LMIC.opmode & OP_TXRXPEND) {
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
+        mydata.rain = counter;
         // Prepare upstream data transmission at the next possible time.
         LMIC_setTxData2(1, (uint8_t*)&mydata, sizeof(mydata)-1, 0);
         Serial.println(F("Packet queued"));
+        counter = 0;
     }
     // Next TX is scheduled after TX_COMPLETE event.
 }
@@ -91,6 +99,8 @@ void printHex2(unsigned v) {
         Serial.print('0');
     Serial.print(v, HEX);
 }
+
+bool in_tx;
 
 void onEvent (ev_t ev) {
     Serial.print(os_getTime());
@@ -113,6 +123,7 @@ void onEvent (ev_t ev) {
             break;
         case EV_JOINED:
             Serial.println(F("EV_JOINED"));
+            in_tx = false;
             {
               u4_t netid = 0;
               devaddr_t devaddr = 0;
@@ -158,6 +169,7 @@ void onEvent (ev_t ev) {
             Serial.println(F("EV_REJOIN_FAILED"));
             break;
         case EV_TXCOMPLETE:
+            in_tx = false;
             Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
             if (LMIC.txrxFlags & TXRX_ACK)
               Serial.println(F("Received ack"));
@@ -206,6 +218,7 @@ void onEvent (ev_t ev) {
         ||    break;
         */
         case EV_TXSTART:
+            in_tx = true;
             Serial.println(F("EV_TXSTART"));
             break;
         case EV_TXCANCELED:
@@ -280,9 +293,6 @@ void sleepDelay(uint16_t n)
   uint8_t period;
   uint16_t cticks;
 
-  // Before sleeping, disable ADC
-  //ADC0.CTRLA &= ~ADC_ENABLE_bm; // Very important on the tinyAVR 2-series
-  
   int nudge;
   if (n < 100) {
       period = RTC_PERIOD_CYC8_gc; // 1/4 ms
@@ -323,9 +333,6 @@ void sleepDelay(uint16_t n)
   set_millis(start + n);
 
   pinModeFast(SERIAL_OUT, OUTPUT);
-
-  // upon waking if you plan to use the ADC
-  //ADC0.CTRLA |= ~ADC_ENABLE_bm;
 }
 
 #if 1
@@ -399,14 +406,16 @@ void blinkDec3(uint16_t d)
 // the setup routine runs once when you press reset:
 void setup() {
 
-  Serial.begin(9600);
+  Serial.begin(38400);
   Serial.println(F("Starting"));
   delay(100);
 
   RTC_init();                           /* Initialize the RTC timer */
   //set_sleep_mode(SLEEP_MODE_PWR_DOWN);  /* Set sleep mode to POWER DOWN mode, disables RTC! */
   set_sleep_mode(SLEEP_MODE_STANDBY);
+  //set_sleep_mode(SLEEP_MODE_IDLE);
   sleep_enable();                       /* Enable sleep mode, but not going to sleep yet */
+  _PROTECTED_WRITE(CLKCTRL_MCLKCTRLB, ( CLKCTRL_MCLKCTRLB | TCB_RUNSTDBY_bm));
 
   pinMode(PIN_PA0, INPUT_PULLUP);
   pinMode(PIN_PA1, INPUT_PULLUP);
@@ -445,13 +454,14 @@ void setup() {
   }
 
   fillDEVEUI(DEVEUI);
+  Serial.flush();
 
 #ifdef USE_LORA
-  //SPI.pins(PIN_PA4, PIN_PA5, PIN_PA6); //SPI.pins(MOSIpin, MISOpin, SCKpin);
   // LMIC init
   os_init();
   // Reset the MAC state. Session and pending data transfers will be discarded.
   LMIC_reset();
+  LMIC_setClockError(MAX_CLOCK_ERROR * 1 / 100);
 
   // Start job (sending automatically starts OTAA too)
   do_send(&sendjob);
@@ -461,23 +471,14 @@ void setup() {
 
 unsigned voltage;
 
-volatile unsigned counter;
-
 ISR(PORTA_PORT_vect)
 {
   //check flags, this code is from the DxCore documentation
   byte flags = VPORTA.INTFLAGS; //here we'll use a port example, like I said, I can't think of any other cases where the disable behavior is wacky like this.
-  // Let's assume flags 2 and 3 may be set.
   if (flags & (1 << 2)) {           // Check if the flag is set, if it is; since we se flags to determine what code to run, we need o check flags, otherwise we
-    //                              // get to second half, and have cleared some flags that weren't recorded in flags because they happened during that timr!
     PORTA.PIN1CTRL &= ~PORT_ISC_gm; // we want to turn off hat interrupt so we do so here.
     VPORTA.INTFLAGS |= (1 << 2);    // Now clear flag knowing it won' get set again. .
   }
-  // if (flags & (1 << 3)) {  // Again // if nothing else, reading from that copy of flags is markedly faster.
-  //   PORTA.PIN3CTRL &= ~PORT_ISC_gm; // we want to turn off hat interrupt so we do so here.
-  //   VPORTA.INTFLAGS |= (1 << 3);    // Now clear flag knowing it won' get set again. .
-  // }
-  // Now we've disabled the interrupt and clear the flags that were on, next step, use flags to decide what to do:
   if (flags & (1 << 2)) {
     // Handle flag 2 interrupt.
     static unsigned long prev;
@@ -486,37 +487,51 @@ ISR(PORTA_PORT_vect)
       prev = millis();
     }
   }
-  // if (flags & (1 << 3)) {
-  //   // Handle flag 3 interrupt.
-  // }
 }
 
 
 // the loop routine runs over and over again forever:
 void loop() {
 
-  //os_runloop_once();
+  static int loopcnt;
   
-  Serial.print(millis()); Serial.print(':');
+  loopcnt++;
+  os_runloop_once();
+  if (in_tx) {
+    if ((loopcnt & 0xFFF) == 1)
+      Serial.print('+');
+    Serial.flush();
+    return;
+  }
+  
+  if (os_queryTimeCriticalJobs(ms2osticks(100))) {
+    if ((loopcnt & 0xFFF) == 1)
+      Serial.print('.'); Serial.flush();
+    return;
+  }
+  //Serial.print(millis()); Serial.print(':');
   //unsigned int v = voltage = getBattery();
   unsigned int v = voltage = getBandgap();
-  mydata.power = v - 200;
+  mydata.power = v - 100;
 
 #if GET_BATTERY
   Serial.print(getBattery());
   Serial.print(' ');
 #endif
-  Serial.println(v);
-  Serial.print(' ');
-  Serial.print(counter);
-  Serial.print(' ');
-  Serial.println(digitalRead(COUNT_PIN));
-  Serial.flush();
+  // Serial.println(v);
+  // Serial.print(' ');
+  // Serial.print(counter);
+  // Serial.print(' ');
+  // Serial.println(digitalRead(COUNT_PIN));
+  // Serial.flush();
 
-  //blinkN(mydata.power/10, led);
-  blinkN(1, LED);
+  // blinkN(mydata.power/10, led);
+  // blinkN(1, LED);
  
-  sleepDelay(100);
+  if (!os_queryTimeCriticalJobs(ms2osticks(2000))) {
+    sleepDelay(2000);
+    Serial.print('-'); Serial.flush();
+  }
 
 #if 0
   blinkDec((v + 50) / 100);
