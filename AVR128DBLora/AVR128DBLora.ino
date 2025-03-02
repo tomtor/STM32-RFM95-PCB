@@ -29,9 +29,9 @@ Tom Vijlbrief (C) 2025
 #define Serial      Serial1 // I use serial port 1 (C0/C1 = Tx/Rx)
 #define SERIAL_OUT  PIN_PC0
 
-unsigned TX_INTERVAL = 900;
+unsigned TX_INTERVAL = 300;
 
-#define ON_TIME   4 // LED ON Time in ms
+#define ON_TIME   3 // LED ON Time in ms
 
 #include "my_lora.h"
 
@@ -498,27 +498,25 @@ void loop() {
   loopcnt++;
   os_runloop_once();
   if (in_tx) {
-    if ((loopcnt & 0xFFF) == 1)
+    digitalWriteFast(LED, (loopcnt & 0x7) == 0);
+    if ((loopcnt & 0xFFF) == 1) {
       Serial.print('+');
+    }
     Serial.flush();
     return;
   }
+  digitalWriteFast(LED, LOW);
   
-  if (os_queryTimeCriticalJobs(ms2osticks(100))) {
-    if ((loopcnt & 0xFFF) == 1)
-      Serial.print('.'); Serial.flush();
-    return;
-  }
   //Serial.print(millis()); Serial.print(':');
   //unsigned int v = voltage = getBattery();
-  unsigned int v = voltage = getBandgap();
-  mydata.power = v - 100;
+  // unsigned int v = voltage = getBandgap();
+  // mydata.power = v - 100;
 
 #if GET_BATTERY
   Serial.print(getBattery());
   Serial.print(' ');
 #endif
-  // Serial.println(v);
+  // Serial.println(getBandgap());
   // Serial.print(' ');
   // Serial.print(counter);
   // Serial.print(' ');
@@ -526,24 +524,13 @@ void loop() {
   // Serial.flush();
 
   // blinkN(mydata.power/10, led);
-  // blinkN(1, LED);
  
   if (!os_queryTimeCriticalJobs(ms2osticks(2000))) {
-    sleepDelay(2000);
+    if ((loopcnt & 0x7) == 0) {
+      mydata.power = getBandgap() - 100;
+      blinkN(1, LED);
+    }
     Serial.print('-'); Serial.flush();
+    sleepDelay(2000);
   }
-
-#if 0
-  blinkDec((v + 50) / 100);
-
-  blinkDec(minutes);
-
-  while (sec2s != 0) {
-    if (sec2s % 10 == 0 && sec2s <= 55) {
-      blinkN(1);
-      sleepDelay(9000);
-    } else
-      sleepDelay(100);
-  }
-#endif
 }
