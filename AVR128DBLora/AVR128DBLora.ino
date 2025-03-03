@@ -25,6 +25,8 @@ Tom Vijlbrief (C) 2025
 
 #define USE_LORA // Activate LORA RFM95 chip
 
+//#define USE_TIMER // Use timer in deep sleep
+
 #undef Serial
 #define Serial      Serial1 // I use serial port 1 (C0/C1 = Tx/Rx)
 #define SERIAL_OUT  PIN_PC0
@@ -251,7 +253,7 @@ void RTC_init(void)
 
   // For 2s overflow ticks while sleeping:
   RTC.INTCTRL = RTC_OVF_bm;
-  
+
   RTC.CTRLA = RTC_PRESCALER_DIV1_gc | RTC_RUNSTDBY_bm | RTC_RTCEN_bm;
 }
 
@@ -287,6 +289,22 @@ ISR(RTC_CNT_vect)
 
   RTC.INTFLAGS = RTC_OVF_bm;          /* Clear interrupt flag by writing '1' (required) */
 }
+
+#ifdef USE_TIMER
+bool idle_mode = true;
+
+void sleep_idle()
+{
+  idle_mode = true;
+  set_sleep_mode(SLEEP_MODE_IDLE);
+}
+
+void sleep_standby()
+{
+  idle_mode = false;
+  set_sleep_mode(SLEEP_MODE_STANDBY);
+}
+#endif
 
 void sleepDelay(uint16_t n)
 {
@@ -325,12 +343,20 @@ void sleepDelay(uint16_t n)
 
   while (ticks) {
     sleep_cpu();
+#ifndef USE_TIMER
     nudge_millis(nudge);
+#else
+    if (!idle_mode) nudge_millis(nudge);
+#endif
   }
   
   RTC.PITCTRLA = 0;    /* Disable PIT counter */
   
+#ifndef USE_TIMER
   set_millis(start + n);
+#else
+  if (!idle_mode) set_millis(start + n);
+#endif
 
   pinModeFast(SERIAL_OUT, OUTPUT);
 }
@@ -412,10 +438,15 @@ void setup() {
 
   RTC_init();                           /* Initialize the RTC timer */
   //set_sleep_mode(SLEEP_MODE_PWR_DOWN);  /* Set sleep mode to POWER DOWN mode, disables RTC! */
+  #ifndef USE_TIMER
   set_sleep_mode(SLEEP_MODE_STANDBY);
-  //set_sleep_mode(SLEEP_MODE_IDLE);
+  #else
+  sleep_standby();
+  #endif
   sleep_enable();                       /* Enable sleep mode, but not going to sleep yet */
-  _PROTECTED_WRITE(CLKCTRL_MCLKCTRLB, ( CLKCTRL_MCLKCTRLB | TCB_RUNSTDBY_bm));
+  // #ifdef USE_TIMER
+  // _PROTECTED_WRITE(CLKCTRL_MCLKCTRLB, ( CLKCTRL_MCLKCTRLB | TCB_RUNSTDBY_bm));
+  // #endif
 
   pinMode(PIN_PA0, INPUT_PULLUP);
   pinMode(PIN_PA1, INPUT_PULLUP);
@@ -455,6 +486,11 @@ void setup() {
 
   fillDEVEUI(DEVEUI);
   Serial.flush();
+
+  // while (1) {
+  //   sleepDelay(50);
+  //   Serial.print(millis()); Serial.print(' '); Serial.println(micros()); Serial.flush();
+  // }
 
 #ifdef USE_LORA
   // LMIC init
@@ -497,15 +533,28 @@ void loop() {
   
   loopcnt++;
   os_runloop_once();
+
+  #ifdef USE_TIMER
+  if (!os_queryTimeCriticalJobs(ms2osticks(100)))
+    sleepDelay(90);
+  #endif
+
   if (in_tx) {
-    digitalWriteFast(LED, (loopcnt & 0x7) == 0);
-    if ((loopcnt & 0xFFF) == 1) {
+    if ((loopcnt & 0x7FF) == 1) {
       Serial.print('+');
     }
     Serial.flush();
+#ifdef USE_TIMER
+    digitalWriteFast(LED, (loopcnt & 0x3F) == 0);
+#else
+    digitalWriteFast(LED, (loopcnt & 0xF) == 0);
+#endif
     return;
   }
   digitalWriteFast(LED, LOW);
+#ifdef USE_TIMER
+  sleep_standby();
+#endif
   
   //Serial.print(millis()); Serial.print(':');
   //unsigned int v = voltage = getBattery();
@@ -530,7 +579,11 @@ void loop() {
       mydata.power = getBandgap() - 100;
       blinkN(1, LED);
     }
+    // Serial.println(counter);
     Serial.print('-'); Serial.flush();
     sleepDelay(2000);
   }
+#ifdef USE_TIMER
+  sleep_idle();
+#endif
 }
