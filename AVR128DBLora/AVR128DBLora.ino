@@ -88,7 +88,7 @@ void do_send(osjob_t* j){
     } else {
         mydata.rain = counter;
         // Prepare upstream data transmission at the next possible time.
-        LMIC_setTxData2(1, (uint8_t*)&mydata, sizeof(mydata)-1, 0);
+        LMIC_setTxData2(1, (uint8_t*)&mydata, sizeof(mydata), 0);
         Serial.println(F("Packet queued"));
         counter = 0;
     }
@@ -581,7 +581,7 @@ void loop() {
     }
     // Serial.println(counter);
     Serial.print('-'); Serial.flush();
-    sleepDelay(2000);
+    sleepDelay(1950);
   }
 #ifdef USE_TIMER
   sleep_idle();
