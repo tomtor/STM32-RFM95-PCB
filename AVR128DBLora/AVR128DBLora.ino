@@ -1,7 +1,9 @@
 /*
 This example AVR128DB script for LORA counts events on a specified pin and sends the count with LoraWAN.
 
-The script is tuned for low power consumption (2 microampere sleep current)
+I use it for a rain bucket counter.
+
+The script is tuned for low power consumption (4 microampere sleep current including RFM95 chip)
 
 Tom Vijlbrief (C) 2025
 */
@@ -17,25 +19,25 @@ Tom Vijlbrief (C) 2025
 
 #include <avr/sleep.h>
 
-#define LED       	PIN_PA7
+#define LED             PIN_PA7
 
-#define COUNT_PIN   PIN_PA2
+#define COUNT_PIN       PIN_PA2
 
-#define GET_BATTERY	0 // Read battery when using a voltage regulator
+#define GET_BATTERY     0 // Read battery when using a voltage regulator
 
-#define USE_LORA // Activate LORA RFM95 chip
+#define USE_LORA        // Activate LORA RFM95 chip
 
-//#define USE_TIMER // Use timer in deep sleep
+//#define USE_TIMER     // Use timer in idle sleep, instead of standby sleep
 
-#undef Serial
-#define Serial      Serial1 // I use serial port 1 (C0/C1 = Tx/Rx)
-#define SERIAL_OUT  PIN_PC0
+#undef  Serial
+#define Serial          Serial1 // I use serial port 1 (C0/C1 = Tx/Rx)
+#define SERIAL_OUT      PIN_PC0
 
-unsigned TX_INTERVAL = 300;
+unsigned TX_INTERVAL =  294;
 
-#define ON_TIME   3 // LED ON Time in ms
+#define ON_TIME         3 // LED ON blink time in ms
 
-#include "my_lora.h"
+#include "my_lora.h"    // this file has my APP settings
 
 //static const u1_t APPEUI[8] = {  }; // reversed 8 bytes of AppEUI registered with ttnctl
 void os_getArtEui (u1_t* buf) { memcpy(buf, APPEUI, 8);}
@@ -86,11 +88,15 @@ void do_send(osjob_t* j){
     if (LMIC.opmode & OP_TXRXPEND) {
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
+        static unsigned long last_send;
+        if (counter == 0 && ((unsigned long) (millis() - last_send)) < 15 * 60 * 1000) // send every 15 minutes when counter == 0 (no rain)
+            return;
         mydata.rain = counter;
         // Prepare upstream data transmission at the next possible time.
         LMIC_setTxData2(1, (uint8_t*)&mydata, sizeof(mydata), 0);
         Serial.println(F("Packet queued"));
         counter = 0;
+        last_send= millis();
     }
     // Next TX is scheduled after TX_COMPLETE event.
 }
@@ -153,7 +159,7 @@ void onEvent (ev_t ev) {
             }
             // Disable link check validation (automatically enabled
             // during join, but because slow data rates change max TX
-	    // size, we don't use it in this example.
+            // size, we don't use it in this example.
             LMIC_setLinkCheckMode(0);
             break;
         /*
@@ -438,15 +444,12 @@ void setup() {
 
   RTC_init();                           /* Initialize the RTC timer */
   //set_sleep_mode(SLEEP_MODE_PWR_DOWN);  /* Set sleep mode to POWER DOWN mode, disables RTC! */
-  #ifndef USE_TIMER
+#ifndef USE_TIMER
   set_sleep_mode(SLEEP_MODE_STANDBY);
-  #else
+#else
   sleep_standby();
-  #endif
+#endif
   sleep_enable();                       /* Enable sleep mode, but not going to sleep yet */
-  // #ifdef USE_TIMER
-  // _PROTECTED_WRITE(CLKCTRL_MCLKCTRLB, ( CLKCTRL_MCLKCTRLB | TCB_RUNSTDBY_bm));
-  // #endif
 
   pinMode(PIN_PA0, INPUT_PULLUP);
   pinMode(PIN_PA1, INPUT_PULLUP);
@@ -579,7 +582,6 @@ void loop() {
       mydata.power = getBandgap() - 100;
       blinkN(1, LED);
     }
-    // Serial.println(counter);
     Serial.print('-'); Serial.flush();
     sleepDelay(1950);
   }
