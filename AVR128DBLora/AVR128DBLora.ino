@@ -27,15 +27,17 @@ Tom Vijlbrief (C) 2025
 
 #define USE_LORA        // Activate LORA RFM95 chip
 
-//#define USE_TIMER     // Use timer in idle sleep, instead of standby sleep
+#define USE_TIMER       // Use timer in idle sleep, instead of standby sleep
 
 #undef  Serial
 #define Serial          Serial1 // I use serial port 1 (C0/C1 = Tx/Rx)
 #define SERIAL_OUT      PIN_PC0
 
-unsigned TX_INTERVAL =  294;
+unsigned TX_INTERVAL =  300;
 
 #define ON_TIME         3 // LED ON blink time in ms
+
+#define SLEEP_ADJUST    1070 // My 32768 clock is 4.5% to fast, so 1024 millis should be 1070
 
 #include "my_lora.h"    // this file has my APP settings
 
@@ -89,8 +91,12 @@ void do_send(osjob_t* j){
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
         static unsigned long last_send;
+        // Serial.println(TX_INTERVAL);
+        // Serial.println(last_send);
+        // Serial.println(millis());
         if (last_send && counter == 0
-        && ((unsigned long) (millis() - last_send)) < (unsigned long)(15L * 60 * 1000)) { // send every 15 minutes when counter == 0 (no rain)
+        && ((unsigned long) (millis() - last_send)) < (unsigned long)(TX_INTERVAL * 2500L)) { // send every 2.5 intervals (rounds to 3) when counter == 0 (no rain)
+            Serial.println("Skip");
             os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
             return;
         }
@@ -203,7 +209,7 @@ void onEvent (ev_t ev) {
               }
             }
             // Schedule next transmission
-            os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
+            os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL - 6), do_send); // adjust - 6 for time to send
             break;
         case EV_LOST_TSYNC:
             Serial.println(F("EV_LOST_TSYNC"));
@@ -275,6 +281,8 @@ ISR(RTC_PIT_vect)
   if (ticks)
     ticks--;
 
+  //digitalWriteFast(LED, ticks & 0x1);
+
   RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
 }
 
@@ -320,6 +328,11 @@ void sleepDelay(uint16_t n)
 {
   uint8_t period;
   uint16_t cticks;
+
+#if SLEEP_ADJUST
+  if (n >= 100)
+    n = (n * (unsigned long)SLEEP_ADJUST) >> 10;
+#endif
 
   int nudge;
   if (n < 100) {
@@ -504,7 +517,11 @@ void setup() {
   os_init();
   // Reset the MAC state. Session and pending data transfers will be discarded.
   LMIC_reset();
-  LMIC_setClockError(MAX_CLOCK_ERROR * 1 / 100);
+#ifndef USE_TIMER
+  LMIC_setClockError(MAX_CLOCK_ERROR * 5 / 100);
+#else
+  LMIC_setClockError(MAX_CLOCK_ERROR * 2 / 100);
+#endif
 
   // Start job (sending automatically starts OTAA too)
   do_send(&sendjob);
@@ -516,6 +533,9 @@ unsigned voltage;
 
 ISR(PORTA_PORT_vect)
 {
+#if COUNT_PIN != PIN_PA2
+#error Adapt this code fragment!
+#endif
   //check flags, this code is from the DxCore documentation
   byte flags = VPORTA.INTFLAGS; //here we'll use a port example, like I said, I can't think of any other cases where the disable behavior is wacky like this.
   if (flags & (1 << 2)) {           // Check if the flag is set, if it is; since we se flags to determine what code to run, we need o check flags, otherwise we
@@ -541,11 +561,6 @@ void loop() {
   loopcnt++;
   os_runloop_once();
 
-  #ifdef USE_TIMER
-  if (!os_queryTimeCriticalJobs(ms2osticks(100)))
-    sleepDelay(90);
-  #endif
-
   if (in_tx) {
     if ((loopcnt & 0x7FF) == 1) {
       Serial.print('+');
@@ -553,6 +568,9 @@ void loop() {
     Serial.flush();
 #ifdef USE_TIMER
     digitalWriteFast(LED, (loopcnt & 0x3F) == 0);
+    sleep_idle();
+    if (!os_queryTimeCriticalJobs(ms2osticks(65)))
+      sleepDelay(64);
 #else
     digitalWriteFast(LED, (loopcnt & 0xF) == 0);
 #endif
