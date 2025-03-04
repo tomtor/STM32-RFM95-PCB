@@ -89,9 +89,13 @@ void do_send(osjob_t* j){
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
         static unsigned long last_send;
-        if (counter == 0 && ((unsigned long) (millis() - last_send)) < 15 * 60 * 1000) // send every 15 minutes when counter == 0 (no rain)
+        if (last_send && counter == 0
+        && ((unsigned long) (millis() - last_send)) < (unsigned long)(15L * 60 * 1000)) { // send every 15 minutes when counter == 0 (no rain)
+            os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
             return;
+        }
         mydata.rain = counter;
+        mydata.power = getBandgap() - 100;
         // Prepare upstream data transmission at the next possible time.
         LMIC_setTxData2(1, (uint8_t*)&mydata, sizeof(mydata), 0);
         Serial.println(F("Packet queued"));
@@ -577,14 +581,14 @@ void loop() {
 
   // blinkN(mydata.power/10, led);
  
-  if (!os_queryTimeCriticalJobs(ms2osticks(2000))) {
-    if ((loopcnt & 0x7) == 0) {
-      mydata.power = getBandgap() - 100;
+  if (!os_queryTimeCriticalJobs(ms2osticks(4000))) {
+    if ((loopcnt & 0x3) == 0)
       blinkN(1, LED);
-    }
     Serial.print('-'); Serial.flush();
-    sleepDelay(1950);
-  }
+    sleepDelay(3000);
+  } else if (!os_queryTimeCriticalJobs(ms2osticks(101)))
+    sleepDelay(100);
+
 #ifdef USE_TIMER
   sleep_idle();
 #endif
