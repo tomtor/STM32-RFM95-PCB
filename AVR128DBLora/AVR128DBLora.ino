@@ -275,13 +275,12 @@ void RTC_init(void)
 
 
 volatile uint16_t ticks;
+volatile uint16_t mticks;
 
 ISR(RTC_PIT_vect)
 {
   if (ticks)
     ticks--;
-
-  //digitalWriteFast(LED, ticks & 0x1);
 
   RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
 }
@@ -311,46 +310,52 @@ ISR(RTC_CNT_vect)
 #ifdef USE_TIMER
 bool idle_mode = true;
 
-void sleep_idle()
+void sleep_idle() // We do not use real idle mode, but just keep TCB2 running in standby
 {
   idle_mode = true;
-  set_sleep_mode(SLEEP_MODE_IDLE);
+  TCB2.CTRLA = TCB2.CTRLA | TCB_RUNSTDBY_bm;
+  // set_sleep_mode(SLEEP_MODE_IDLE);
 }
 
 void sleep_standby()
 {
   idle_mode = false;
-  set_sleep_mode(SLEEP_MODE_STANDBY);
+  TCB2.CTRLA = TCB2.CTRLA & ~TCB_RUNSTDBY_bm;
+  // set_sleep_mode(SLEEP_MODE_STANDBY);
 }
 #endif
 
-void sleepDelay(uint16_t n)
+void sleepDelay(uint16_t orgn)
 {
   uint8_t period;
   uint16_t cticks;
+  uint16_t n = orgn;
 
 #if SLEEP_ADJUST
-  if (n >= 100)
+#if SLEEP_ADJUST > 1085
+#warning "ADJUSTMENT must be less than +6%"
+#endif
+  if (n >= 50)
     n = (n * (unsigned long)SLEEP_ADJUST) >> 10;
 #endif
 
-  int nudge;
-  if (n < 100) {
+  int nudge; // We nudge less than the timer period, so that set_millis(start + orgn) never goes backwards!
+  if (n < 10) {
       period = RTC_PERIOD_CYC8_gc; // 1/4 ms
       cticks = (n << 1); // Why NOT (n << 2) !?!?!
       nudge = 0;
   } else if (n < 1000) {
       period = RTC_PERIOD_CYC64_gc; // 2 ms
       cticks = (n >> 1);
-      nudge = 2;
+      nudge = 1; // Effectively 1.75 because we add ((ticks & 0x3) != 0)
   } else if (n < 5000) {
       period = RTC_PERIOD_CYC1024_gc; // 32 ms
       cticks = (n >> 5);
-      nudge = 32;
+      nudge = 30; // About -6%
   } else {
       period = RTC_PERIOD_CYC8192_gc; // 256 ms
       cticks = (n >> 8);
-      nudge = 256;
+      nudge = 240; // About -6%
   }
 
   while (RTC.PITSTATUS & RTC_CTRLBUSY_bm)  // Wait for new settings to synchronize
@@ -367,21 +372,26 @@ void sleepDelay(uint16_t n)
   while (ticks) {
     sleep_cpu();
 #ifndef USE_TIMER
-    nudge_millis(nudge);
+    nudge_millis(nudge == 1 ? 1 + ((ticks & 0x3) != 0) : nudge);
 #else
-    if (!idle_mode) nudge_millis(nudge);
+    if (!idle_mode)
+      nudge_millis(nudge == 1 ? 1 + ((ticks & 0x3) != 0): nudge);
 #endif
+    mticks += nudge; // rude time keeping for debouncing
   }
   
   RTC.PITCTRLA = 0;    /* Disable PIT counter */
   
 #ifndef USE_TIMER
-  set_millis(start + n);
+  set_millis(start + orgn);
 #else
-  if (!idle_mode) set_millis(start + n);
+  //unsigned long adjust = millis() - start;
+  if (!idle_mode) set_millis(start + orgn);
 #endif
 
   pinModeFast(SERIAL_OUT, OUTPUT);
+
+  //if (!idle_mode && adjust > orgn) { Serial.flush(); Serial.print("!!! "); Serial.print(orgn); Serial.print(' '); Serial.print(adjust); Serial.flush(); }
 }
 
 #if 1
@@ -461,9 +471,8 @@ void setup() {
 
   RTC_init();                           /* Initialize the RTC timer */
   //set_sleep_mode(SLEEP_MODE_PWR_DOWN);  /* Set sleep mode to POWER DOWN mode, disables RTC! */
-#ifndef USE_TIMER
   set_sleep_mode(SLEEP_MODE_STANDBY);
-#else
+#ifdef USE_TIMER
   sleep_standby();
 #endif
   sleep_enable();                       /* Enable sleep mode, but not going to sleep yet */
@@ -507,11 +516,6 @@ void setup() {
   fillDEVEUI(DEVEUI);
   Serial.flush();
 
-  // while (1) {
-  //   sleepDelay(50);
-  //   Serial.print(millis()); Serial.print(' '); Serial.println(micros()); Serial.flush();
-  // }
-
 #ifdef USE_LORA
   // LMIC init
   os_init();
@@ -528,9 +532,6 @@ void setup() {
 #endif
 }
 
-
-unsigned voltage;
-
 ISR(PORTA_PORT_vect)
 {
 #if COUNT_PIN != PIN_PA2
@@ -544,10 +545,10 @@ ISR(PORTA_PORT_vect)
   }
   if (flags & (1 << 2)) {
     // Handle flag 2 interrupt.
-    static unsigned long prev;
-    if ((unsigned long)(millis() - prev) > 1000) {
+    static uint16_t prev;
+    if (mticks - prev > 1000) {
       counter++;
-      prev = millis();
+      prev = mticks;
     }
   }
 }
@@ -555,7 +556,6 @@ ISR(PORTA_PORT_vect)
 
 // the loop routine runs over and over again forever:
 void loop() {
-
   static int loopcnt;
   
   loopcnt++;
