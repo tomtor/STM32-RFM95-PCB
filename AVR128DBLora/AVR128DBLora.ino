@@ -41,13 +41,13 @@ unsigned TX_INTERVAL =  300;
 
 #include "my_lora.h"    // this file has my APP settings
 
-//static const u1_t APPEUI[8] = {  }; // reversed 8 bytes of AppEUI registered with ttnctl
-void os_getArtEui (u1_t* buf) { memcpy(buf, APPEUI, 8);}
+//static const u1_t APPEUI[8] PROGMEM = {  }; // reversed 8 bytes of AppEUI registered with ttnctl
+void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
 
-//static const unsigned char APPKEY[16] = {  }; // non-reversed 16 bytes of the APPKEY used when registering a device with ttnctl register DevEUI AppKey
-void os_getDevKey (u1_t* buf) {  memcpy(buf, APPKEY, 16);}
+//static const unsigned char APPKEY[16] PROGMEM = {  }; // non-reversed 16 bytes of the APPKEY used when registering a device with ttnctl register DevEUI AppKey
+void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
-static u1_t DEVEUI[8]={ };
+static u1_t DEVEUI[8]={ }; // Filled by fillDEVUI()
 void os_getDevEui (u1_t* buf) { memcpy(buf, DEVEUI, 8);}
 
 void fillDEVEUI (u1_t* buf) {
