@@ -6886,6 +6886,7 @@
 				(font
 					(size 1.524 1.524)
 				)
+				(hide yes)
 			)
 		)
 		(property "Description" "RFM95HW, LORA +20dBm HopeRF Wireless Transceiver, Vcc=3.3V"
