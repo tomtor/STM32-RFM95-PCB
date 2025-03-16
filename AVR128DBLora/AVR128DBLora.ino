@@ -37,7 +37,7 @@ unsigned TX_INTERVAL =  300;
 
 #define ON_TIME         3 // LED ON blink time in ms
 
-#define SLEEP_ADJUST    1070 // My 32768 clock is 4.5% to fast, so 1024 millis should be 1070
+//#define SLEEP_ADJUST    1070 // My 32768 clock is 4.5% to fast, so 1024 millis should be 1070
 
 #include "my_lora.h"    // this file has my APP settings
 
@@ -113,12 +113,6 @@ void do_send(osjob_t* j){
     // Next TX is scheduled after TX_COMPLETE event.
 }
 
-void printHex2(unsigned v) {
-    v &= 0xff;
-    if (v < 16)
-        Serial.print('0');
-    Serial.print(v, HEX);
-}
 
 bool in_tx;
 
@@ -158,14 +152,14 @@ void onEvent (ev_t ev) {
               for (size_t i=0; i<sizeof(artKey); ++i) {
                 if (i != 0)
                   Serial.print("-");
-                printHex2(artKey[i]);
+                Serial.printHex(artKey[i]);
               }
               Serial.println("");
               Serial.print("NwkSKey: ");
               for (size_t i=0; i<sizeof(nwkKey); ++i) {
                       if (i != 0)
                               Serial.print("-");
-                      printHex2(nwkKey[i]);
+                      Serial.printHex(nwkKey[i]);
               }
               Serial.println();
             }
@@ -268,7 +262,7 @@ void RTC_init(void)
   RTC.CLKSEL = RTC_CLKSEL_OSC32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
   RTC.PITINTCTRL = RTC_PI_bm;           /* PIT Interrupt: enabled */
 
-  // For 2s overflow ticks while sleeping:
+  // For overflow ticks while sleeping:
   RTC.INTCTRL = RTC_OVF_bm;
 
   RTC.CTRLA = RTC_PRESCALER_DIV1_gc | RTC_RUNSTDBY_bm | RTC_RTCEN_bm;
@@ -276,7 +270,6 @@ void RTC_init(void)
 
 
 volatile uint16_t ticks;
-//volatile uint16_t mticks;
 
 ISR(RTC_PIT_vect)
 {
@@ -286,12 +279,12 @@ ISR(RTC_PIT_vect)
   RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
 }
 
-volatile uint8_t secs, hours, minutes; // 2s ticks
-volatile uint16_t time2s;
+volatile uint8_t secs, hours, minutes;
+volatile uint16_t time_s;
 
 ISR(RTC_CNT_vect)
 {
-  time2s++;
+  time_s++;
   if (secs < 59)
       secs += 1;
   else {
@@ -317,14 +310,12 @@ void sleep_idle() // We do not use real idle mode, but just keep TCB2 running in
 {
   idle_mode = true;
   TCB2.CTRLA = TCB2.CTRLA | TCB_RUNSTDBY_bm;
-  // set_sleep_mode(SLEEP_MODE_IDLE);
 }
 
 void sleep_standby()
 {
   idle_mode = false;
   TCB2.CTRLA = TCB2.CTRLA & ~TCB_RUNSTDBY_bm;
-  // set_sleep_mode(SLEEP_MODE_STANDBY);
 }
 #endif
 
@@ -335,40 +326,31 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   uint16_t n = orgn;
 
 #if SLEEP_ADJUST
-#if SLEEP_ADJUST > 1085
-#warning "ADJUSTMENT must be less than +6%"
-#endif
   if (n >= 50) {
-    //n = (n * (unsigned long)SLEEP_ADJUST) >> 10;
     n = (n * (unsigned long)SLEEP_ADJUST) >> 8;
-    n >>= 2; // prrfer faster shift over codevsize
+    n >>= 2; // prefer faster shift over codesize
   }
 #endif
 
-  int nudge; // We nudge less than the timer period, so that set_millis(start + orgn) never goes backwards!
+  int nudge;
   if (n < 10) {
       period = RTC_PERIOD_CYC8_gc; // 1/4 ms
       cticks = (n << 1); // Why NOT (n << 2) !?!?!
       nudge = 0;
   } else if (n <= 1000 || precise) {
-      //period = RTC_PERIOD_CYC64_gc; // 2 ms
       period = RTC_PERIOD_CYC32_gc; // 1 ms
       cticks = n;
-      //cticks = (n >> 1);
-      nudge = 1; // Effectively 1.75 because we add ((ticks & 0x3) != 0)
-      //nudge = 1; // Effectively 1.75 because we add ((ticks & 0x3) != 0)
+      nudge = 1;
 #if 0
   } else if (n < 5000) {
       period = RTC_PERIOD_CYC1024_gc; // 32 ms
       cticks = (n >> 5);
-      //nudge = 30; // About -6%
-      nudge = 32; // About -6%
+      nudge = 32;
 #endif
   } else {
       period = RTC_PERIOD_CYC8192_gc; // 256 ms
       cticks = (n >> 8);
-      //nudge = 240; // About -6%
-      nudge = 256; // About -6%
+      nudge = 256;
   }
 
   while (RTC.PITSTATUS & RTC_CTRLBUSY_bm)  // Wait for new settings to synchronize
@@ -387,14 +369,11 @@ void sleepDelay(uint16_t orgn, bool precise=false)
 #ifndef USE_TIMER
     if (nudge)
       nudge_millis(nudge);
-    //nudge_millis(nudge == 1 ? 1 + ((ticks & 0x3) != 0) : nudge);
 #else
     if (!idle_mode)
       if (nudge)
         nudge_millis(nudge);
-      //nudge_millis(nudge == 1 ? 1 + ((ticks & 0x3) != 0): nudge);
 #endif
-    //mticks += nudge; // rude time keeping for debouncing
   }
   
   RTC.PITCTRLA = 0;    /* Disable PIT counter */
@@ -403,15 +382,12 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   if (!nudge)
     set_millis(start + orgn);
 #else
-  //unsigned long adjust = millis() - start;
   if (!idle_mode)
     if (!nudge)
       set_millis(start + orgn);
 #endif
 
   pinModeFast(SERIAL_OUT, OUTPUT);
-
-  //if (!idle_mode && adjust > orgn) { Serial.flush(); Serial.print("!!! "); Serial.print(orgn); Serial.print(' '); Serial.print(adjust); Serial.flush(); }
 }
 
 #if 1
@@ -490,7 +466,6 @@ void setup() {
   delay(100);
 
   RTC_init();                           /* Initialize the RTC timer */
-  //set_sleep_mode(SLEEP_MODE_PWR_DOWN);  /* Set sleep mode to POWER DOWN mode, disables RTC! */
   set_sleep_mode(SLEEP_MODE_STANDBY);
 #ifdef USE_TIMER
   sleep_standby();
@@ -558,19 +533,19 @@ ISR(PORTA_PORT_vect)
 #error Adapt this code fragment!
 #endif
   //check flags, this code is from the DxCore documentation
-  byte flags = VPORTA.INTFLAGS; //here we'll use a port example, like I said, I can't think of any other cases where the disable behavior is wacky like this.
-  if (flags & (1 << 2)) {           // Check if the flag is set, if it is; since we se flags to determine what code to run, we need o check flags, otherwise we
-    PORTA.PIN2CTRL &= ~PORT_ISC_gm; // we want to turn off hat interrupt so we do so here.
-    VPORTA.INTFLAGS |= (1 << 2);    // Now clear flag knowing it won' get set again. .
+  byte flags = VPORTA.INTFLAGS;
+  if (flags & (1 << 2)) {
+    PORTA.PIN2CTRL &= ~PORT_ISC_gm;
+    VPORTA.INTFLAGS |= (1 << 2);
   }
   if (flags & (1 << 2)) {
     // Handle flag 2 interrupt.
     static uint16_t prev;
     if (counter == 0)
-      time2s = 0;
-    if (time2s - prev > 1 || counter == 0) {
+      time_s = 0;
+    if (time_s - prev > 1 || counter == 0) {
       counter++;
-      prev = time2s;
+      prev = time_s;
     }
   }
 }
