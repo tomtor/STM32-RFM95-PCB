@@ -100,12 +100,14 @@ void do_send(osjob_t* j){
             os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
             return;
         }
-        mydata.rain = counter;
         mydata.power = getBandgap() - 100;
+        noInterrupts(); // prevent race condition with rain interrupts
+        mydata.rain = counter;
+        counter = 0;
+        interrupts();
         // Prepare upstream data transmission at the next possible time.
         LMIC_setTxData2(1, (uint8_t*)&mydata, sizeof(mydata), 0);
         Serial.println(F("Packet queued"));
-        counter = 0;
         last_send= millis();
     }
     // Next TX is scheduled after TX_COMPLETE event.
@@ -261,9 +263,8 @@ void RTC_init(void)
 {
   /* Initialize RTC: */
   while (RTC.STATUS > 0)
-  {
     ;                                   /* Wait for all register to be synchronized */
-  }
+  RTC.PER = 0x7FFF;			/* 1 sec overflow */
   RTC.CLKSEL = RTC_CLKSEL_OSC32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
   RTC.PITINTCTRL = RTC_PI_bm;           /* PIT Interrupt: enabled */
 
@@ -275,7 +276,7 @@ void RTC_init(void)
 
 
 volatile uint16_t ticks;
-volatile uint16_t mticks;
+//volatile uint16_t mticks;
 
 ISR(RTC_PIT_vect)
 {
@@ -285,14 +286,16 @@ ISR(RTC_PIT_vect)
   RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
 }
 
-volatile uint8_t sec2s, hours, minutes; // 2s ticks
+volatile uint8_t secs, hours, minutes; // 2s ticks
+volatile uint16_t time2s;
 
 ISR(RTC_CNT_vect)
 {
-  if (sec2s < 58)
-      sec2s += 2;
+  time2s++;
+  if (secs < 59)
+      secs += 1;
   else {
-      sec2s = 0;
+      secs = 0;
       if (minutes < 59)
         minutes++;
       else {
@@ -325,7 +328,7 @@ void sleep_standby()
 }
 #endif
 
-void sleepDelay(uint16_t orgn)
+void sleepDelay(uint16_t orgn, bool precise=false)
 {
   uint8_t period;
   uint16_t cticks;
@@ -335,8 +338,11 @@ void sleepDelay(uint16_t orgn)
 #if SLEEP_ADJUST > 1085
 #warning "ADJUSTMENT must be less than +6%"
 #endif
-  if (n >= 50)
-    n = (n * (unsigned long)SLEEP_ADJUST) >> 10;
+  if (n >= 50) {
+    //n = (n * (unsigned long)SLEEP_ADJUST) >> 10;
+    n = (n * (unsigned long)SLEEP_ADJUST) >> 8;
+    n >>= 2; // prrfer faster shift over codevsize
+  }
 #endif
 
   int nudge; // We nudge less than the timer period, so that set_millis(start + orgn) never goes backwards!
@@ -344,18 +350,25 @@ void sleepDelay(uint16_t orgn)
       period = RTC_PERIOD_CYC8_gc; // 1/4 ms
       cticks = (n << 1); // Why NOT (n << 2) !?!?!
       nudge = 0;
-  } else if (n < 1000) {
-      period = RTC_PERIOD_CYC64_gc; // 2 ms
-      cticks = (n >> 1);
+  } else if (n <= 1000 || precise) {
+      //period = RTC_PERIOD_CYC64_gc; // 2 ms
+      period = RTC_PERIOD_CYC32_gc; // 1 ms
+      cticks = n;
+      //cticks = (n >> 1);
       nudge = 1; // Effectively 1.75 because we add ((ticks & 0x3) != 0)
+      //nudge = 1; // Effectively 1.75 because we add ((ticks & 0x3) != 0)
+#if 0
   } else if (n < 5000) {
       period = RTC_PERIOD_CYC1024_gc; // 32 ms
       cticks = (n >> 5);
-      nudge = 30; // About -6%
+      //nudge = 30; // About -6%
+      nudge = 32; // About -6%
+#endif
   } else {
       period = RTC_PERIOD_CYC8192_gc; // 256 ms
       cticks = (n >> 8);
-      nudge = 240; // About -6%
+      //nudge = 240; // About -6%
+      nudge = 256; // About -6%
   }
 
   while (RTC.PITSTATUS & RTC_CTRLBUSY_bm)  // Wait for new settings to synchronize
@@ -372,21 +385,28 @@ void sleepDelay(uint16_t orgn)
   while (ticks) {
     sleep_cpu();
 #ifndef USE_TIMER
-    nudge_millis(nudge == 1 ? 1 + ((ticks & 0x3) != 0) : nudge);
+    if (nudge)
+      nudge_millis(nudge);
+    //nudge_millis(nudge == 1 ? 1 + ((ticks & 0x3) != 0) : nudge);
 #else
     if (!idle_mode)
-      nudge_millis(nudge == 1 ? 1 + ((ticks & 0x3) != 0): nudge);
+      if (nudge)
+        nudge_millis(nudge);
+      //nudge_millis(nudge == 1 ? 1 + ((ticks & 0x3) != 0): nudge);
 #endif
-    mticks += nudge; // rude time keeping for debouncing
+    //mticks += nudge; // rude time keeping for debouncing
   }
   
   RTC.PITCTRLA = 0;    /* Disable PIT counter */
   
 #ifndef USE_TIMER
-  set_millis(start + orgn);
+  if (!nudge)
+    set_millis(start + orgn);
 #else
   //unsigned long adjust = millis() - start;
-  if (!idle_mode) set_millis(start + orgn);
+  if (!idle_mode)
+    if (!nudge)
+      set_millis(start + orgn);
 #endif
 
   pinModeFast(SERIAL_OUT, OUTPUT);
@@ -540,15 +560,17 @@ ISR(PORTA_PORT_vect)
   //check flags, this code is from the DxCore documentation
   byte flags = VPORTA.INTFLAGS; //here we'll use a port example, like I said, I can't think of any other cases where the disable behavior is wacky like this.
   if (flags & (1 << 2)) {           // Check if the flag is set, if it is; since we se flags to determine what code to run, we need o check flags, otherwise we
-    PORTA.PIN1CTRL &= ~PORT_ISC_gm; // we want to turn off hat interrupt so we do so here.
+    PORTA.PIN2CTRL &= ~PORT_ISC_gm; // we want to turn off hat interrupt so we do so here.
     VPORTA.INTFLAGS |= (1 << 2);    // Now clear flag knowing it won' get set again. .
   }
   if (flags & (1 << 2)) {
     // Handle flag 2 interrupt.
     static uint16_t prev;
-    if (mticks - prev > 1000) {
+    if (counter == 0)
+      time2s = 0;
+    if (time2s - prev > 1 || counter == 0) {
       counter++;
-      prev = mticks;
+      prev = time2s;
     }
   }
 }
