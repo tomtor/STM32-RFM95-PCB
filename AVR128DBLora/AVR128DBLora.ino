@@ -31,7 +31,6 @@ Tom Vijlbrief (C) 2025
 
 #undef  Serial
 #define Serial          Serial1 // I use serial port 1 (C0/C1 = Tx/Rx)
-#define SERIAL_OUT      PIN_PC0
 
 unsigned TX_INTERVAL =  300;
 
@@ -361,7 +360,6 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   while (RTC.PITSTATUS & RTC_CTRLBUSY_bm)  // Wait for new settings to synchronize
     ;
   ticks = cticks;
-  pinModeFast(SERIAL_OUT, INPUT_PULLUP);
   uint32_t start = millis();
 
   while (ticks) {
@@ -386,8 +384,6 @@ void sleepDelay(uint16_t orgn, bool precise=false)
     if (!nudge)
       set_millis(start + orgn);
 #endif
-
-  pinModeFast(SERIAL_OUT, OUTPUT);
 }
 
 #if 1
