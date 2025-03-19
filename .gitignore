@@ -1,0 +1,10 @@
+*cache
+secrets.h
+build
+*-cache.lib
+*-backups
+*prl
+*.net
+*hex
+*lst
+*map
