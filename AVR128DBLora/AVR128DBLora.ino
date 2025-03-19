@@ -19,6 +19,9 @@ Tom Vijlbrief (C) 2025
 
 #include <avr/sleep.h>
 
+#define RTC_PERIOD	0x8000 // Overflow at 32768 ticks from RTC
+#define RTC_MILLIS	1000   // That matches 1000ms
+
 #define LED             PIN_PA7
 
 #define COUNT_PIN       PIN_PA2
@@ -252,22 +255,25 @@ void onEvent (ev_t ev) {
 }
 
 
+#define SLEEPINT	// Do not count PIT interrupts but use RTC interrupt at exact time
+
 void RTC_init(void)
 {
   /* Initialize RTC: */
   while (RTC.STATUS > 0)
     ;                                   /* Wait for all register to be synchronized */
-  RTC.PER = 0x7FFF;			/* 1 sec overflow */
+  RTC.PER = RTC_PERIOD - 1;		/* 1 sec overflow */
   RTC.CLKSEL = RTC_CLKSEL_OSC32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
-  RTC.PITINTCTRL = RTC_PI_bm;           /* PIT Interrupt: enabled */
+  //RTC.PITINTCTRL = RTC_PI_bm;           /* PIT Interrupt: enabled */
 
   // For overflow ticks while sleeping:
   RTC.INTCTRL = RTC_OVF_bm;
 
-  RTC.CTRLA = RTC_PRESCALER_DIV1_gc | RTC_RUNSTDBY_bm | RTC_RTCEN_bm;
+  RTC.CTRLA |= RTC_PRESCALER_DIV1_gc | RTC_RUNSTDBY_bm | RTC_RTCEN_bm;
 }
 
 
+#ifndef SLEEPINT
 volatile uint16_t ticks;
 
 ISR(RTC_PIT_vect)
@@ -277,16 +283,27 @@ ISR(RTC_PIT_vect)
 
   RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
 }
+#else
+volatile uint8_t sleep_cnt;
+#endif
 
 volatile uint8_t secs, hours, minutes;
 volatile uint16_t time_s;
 
 ISR(RTC_CNT_vect)
 {
-  time_s++;
-  if (secs < 59)
+#ifdef SLEEPINT
+  if (RTC.INTFLAGS & RTC_CMP_bm) {
+    sleep_cnt--;
+    RTC.INTFLAGS = RTC_CMP_bm;            /* Clear interrupt flag by writing '1' (required) */
+  }
+#endif
+
+  if (RTC.INTFLAGS & RTC_OVF_bm) {
+    time_s++;
+    if (secs < 59)
       secs += 1;
-  else {
+    else {
       secs = 0;
       if (minutes < 59)
         minutes++;
@@ -297,9 +314,9 @@ ISR(RTC_CNT_vect)
         else
           hours = 0;
       }  
+    }
+    RTC.INTFLAGS = RTC_OVF_bm;          /* Clear interrupt flag by writing '1' (required) */
   }
-
-  RTC.INTFLAGS = RTC_OVF_bm;          /* Clear interrupt flag by writing '1' (required) */
 }
 
 #ifdef USE_TIMER
@@ -320,6 +337,7 @@ void sleep_standby()
 
 void sleepDelay(uint16_t orgn, bool precise=false)
 {
+#ifndef SLEEPINT
   uint8_t period;
   uint16_t cticks;
   uint16_t n = orgn;
@@ -357,8 +375,10 @@ void sleepDelay(uint16_t orgn, bool precise=false)
 
   RTC.PITCTRLA = period | RTC_PITEN_bm;    // Enable PIT counter: enabled
 
-  while (RTC.PITSTATUS & RTC_CTRLBUSY_bm)  // Wait for new settings to synchronize
-    ;
+  RTC.PITINTCTRL |= RTC_PI_bm;             /* PIT Interrupt: enabled */
+
+  //while (RTC.PITSTATUS & RTC_CTRLBUSY_bm)  // Wait for new settings to synchronize
+    //;
   ticks = cticks;
   uint32_t start = millis();
 
@@ -374,7 +394,8 @@ void sleepDelay(uint16_t orgn, bool precise=false)
 #endif
   }
   
-  RTC.PITCTRLA = 0;    /* Disable PIT counter */
+  //RTC.PITCTRLA = 0;    /* Disable PIT counter, should not be done, see erratum */
+  RTC.PITINTCTRL &= ~RTC_PI_bm;           /* PIT Interrupt: disabled */
   
 #ifndef USE_TIMER
   if (!nudge)
@@ -383,6 +404,30 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   if (!idle_mode)
     if (!nudge)
       set_millis(start + orgn);
+#endif
+
+#else
+
+  while (RTC.STATUS /* & RTC_CMPBUSY_bm */)  // Wait for new settings to synchronize
+    ;
+
+  uint32_t delay;
+  RTC.CMP = (RTC.CNT + (delay = (orgn * 32UL) + uint16_t(orgn / 128 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 128ms is exact!
+
+  while (RTC.STATUS /* & RTC_CMPBUSY_bm */)  // Wait for new settings to synchronize
+    ;
+  
+  sleep_cnt = delay / RTC_PERIOD + 1; // Calculate number of wrap arounds (overflows)
+  uint64_t start = millis();
+  RTC.INTCTRL |= RTC_CMP_bm;
+  while (sleep_cnt) {
+    sleep_cpu();
+    if (sleep_cnt)
+      nudge_millis(RTC_MILLIS);
+  }
+  set_millis(start + orgn);
+
+  RTC.INTCTRL &= ~RTC_CMP_bm;
 #endif
 }
 
