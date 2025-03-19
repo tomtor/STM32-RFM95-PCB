@@ -27,7 +27,7 @@ Radio radio = new RadioModule();
 */
 
 // how often to send an uplink - consider legal & FUP constraints - see notes
-const uint32_t uplinkIntervalSeconds = 1UL * 60UL;    // minutes x seconds
+//const uint32_t uplinkIntervalSeconds = 1UL * 60UL;    // minutes x seconds
 
 #include "secrets.h"
 

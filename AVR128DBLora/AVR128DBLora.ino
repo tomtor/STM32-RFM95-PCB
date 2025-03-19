@@ -422,8 +422,6 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   uint64_t start = millis();
   while (sleep_cnt) {
     sleep_cpu();
-    if (sleep_cnt)
-      nudge_millis(RTC_MILLIS);
   }
   set_millis(start + orgn);
 

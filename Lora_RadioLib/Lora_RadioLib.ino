@@ -4,6 +4,9 @@
 
 #include "config.h"
 
+int uplinkIntervalSeconds = 1 * 60;    // minutes x seconds
+
+
 // STM32 Unique Chip IDs
 #define STM32_ID	((uint8_t *) 0x1FFFF7E8)
 
@@ -222,7 +225,7 @@ void setup() {
     if (!sensor.begin(uint8_t(ADDR), uint8_t(WAKE_PIN))) {
       Serial.println("Initialization failed.");
       Serial.flush();
-      mdelay(2000);
+      mdelay(300);
     } else {
       Serial.println("CCS811 OK");
       sensor.sleep();
@@ -230,6 +233,18 @@ void setup() {
     }
   }
 
+  // radio.begin();
+  // radio.sleep();
+  // pinMode(WAKE_PIN, OUTPUT);
+  // // pinMode(CS_PIN, OUTPUT);
+  // pinMode(PB6, INPUT_ANALOG);
+  // pinMode(PB7, INPUT_ANALOG);
+  // while (1) {
+  //   blinkN(1);
+  //   digitalWrite(WAKE_PIN, HIGH);  // set WAKE_PIN high - this puts sensor in sleep mode (~2uA) and all I2C communications are ignored
+  //   //digitalWrite(CS_PIN, LOW);
+  //   mdelay(3000, false);
+  // }
 
   Serial.println(F("Initialise the radio"));
   int16_t state = radio.begin();
@@ -284,13 +299,19 @@ void loop() {
   readData();
   
   // Perform an uplink
-  int16_t state = node.sendReceive((uint8_t*)&mydata, sizeof(mydata));    
+  uint8_t reply[2];
+  size_t replylen;
+  int16_t state = node.sendReceive((uint8_t*)&mydata, sizeof(mydata), 1, reply, &replylen);
   debug(state < RADIOLIB_ERR_NONE, F("Error in sendReceive"), state, false);
 
   // Check if a downlink was received 
   // (state 0 = no downlink, state 1/2 = downlink in window Rx1/Rx2)
   if(state > 0) {
     Serial.println(F("Received a downlink"));
+    if (replylen == 1) {
+      mydata.rate2= reply[0];
+      uplinkIntervalSeconds= (1 << reply[0]);
+    }
   } else {
     Serial.println(F("No downlink received"));
   }
@@ -300,6 +321,7 @@ void loop() {
   Serial.println(F(" seconds\n"));
   Serial.flush();
   
+  radio.sleep();
   SPI.end();
 #if 1 // Do we need all this?
   digitalWrite(SCK_PIN, LOW);
@@ -332,4 +354,7 @@ void loop() {
   pinMode(DIO0_PIN, INPUT);
 
   SPI.begin();
+  Serial.begin(115200);
+  
+  blinkN(1);
 }
