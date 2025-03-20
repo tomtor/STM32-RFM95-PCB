@@ -417,7 +417,7 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   while (RTC.STATUS /* & RTC_CMPBUSY_bm */)  // Wait for new settings to synchronize
     ;
   
-  RTC.INTCTRL |= RTC_CMP_bm;
+  RTC.INTCTRL |= RTC_CMP_bm; // This might trigger a pending interrupt, so do this before assigning sleep_cnt!
   sleep_cnt = delay / RTC_PERIOD + 1; // Calculate number of wrap arounds (overflows)
   uint64_t start = millis();
   while (sleep_cnt) {
@@ -556,7 +556,7 @@ void setup() {
   // Reset the MAC state. Session and pending data transfers will be discarded.
   LMIC_reset();
 #ifndef USE_TIMER
-  LMIC_setClockError(MAX_CLOCK_ERROR * 5 / 100);
+  LMIC_setClockError(MAX_CLOCK_ERROR * 10 / 100);
 #else
   LMIC_setClockError(MAX_CLOCK_ERROR * 2 / 100);
 #endif
