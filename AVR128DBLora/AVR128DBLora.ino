@@ -645,7 +645,6 @@ void loop() {
     if ((loopcnt & 0x3) == 0)
       blinkN(1, LED);
     Serial.print('-'); Serial.flush();
-    pinMode(PIN_PA5, INPUT_PULLUP); // prevent floating MISO power drain
     sleepDelay(3000);
   } else if (!os_queryTimeCriticalJobs(ms2osticks(101)))
     sleepDelay(100);
