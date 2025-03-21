@@ -5,7 +5,9 @@ See:
 - https://www.thethingsnetwork.org/forum/t/avr128db28-pcb-with-rfm95/50864
 - https://www.thethingsnetwork.org/labs/story/a-cheap-stm32-arduino-node
 
-for background and software samples.
+for background and old software samples.
+
+This repository now has tested LMIC and RadioLib Arduino code for the AVR128DB board with the RFM95W.
 
 ![3D rendering](AVR-LORA-805.jpg)
 
