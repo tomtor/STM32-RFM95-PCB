@@ -30,7 +30,7 @@ Tom Vijlbrief (C) 2025
 
 #define USE_LORA        // Activate LORA RFM95 chip
 
-//#define USE_TIMER       // Use timer in idle sleep, instead of standby sleep
+#define USE_TIMER       // Use timer in idle sleep, instead of standby sleep
 #define SLEEPINT	      // Do not count PIT interrupts but use RTC interrupt at exact time
 
 #undef  Serial
@@ -613,7 +613,6 @@ void loop() {
     sleep_idle();
     if (!os_queryTimeCriticalJobs(ms2osticks(65)))
       sleepDelay(64);
-    //Serial.println(millis()); Serial.flush();
 #else
     digitalWriteFast(LED, (loopcnt & 0xF) == 0);
 #endif
@@ -646,6 +645,7 @@ void loop() {
     if ((loopcnt & 0x3) == 0)
       blinkN(1, LED);
     Serial.print('-'); Serial.flush();
+    pinMode(PIN_PA5, INPUT_PULLUP); // prevent floating MISO power drain
     sleepDelay(3000);
   } else if (!os_queryTimeCriticalJobs(ms2osticks(101)))
     sleepDelay(100);
