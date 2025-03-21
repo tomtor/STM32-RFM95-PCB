@@ -30,7 +30,8 @@ Tom Vijlbrief (C) 2025
 
 #define USE_LORA        // Activate LORA RFM95 chip
 
-#define USE_TIMER       // Use timer in idle sleep, instead of standby sleep
+//#define USE_TIMER       // Use timer in idle sleep, instead of standby sleep
+#define SLEEPINT	      // Do not count PIT interrupts but use RTC interrupt at exact time
 
 #undef  Serial
 #define Serial          Serial1 // I use serial port 1 (C0/C1 = Tx/Rx)
@@ -423,7 +424,12 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   while (sleep_cnt) {
     sleep_cpu();
   }
+#ifndef USE_TIMER
   set_millis(start + orgn);
+#else
+  if (!idle_mode)
+    set_millis(start + orgn);
+#endif
 
   RTC.INTCTRL &= ~RTC_CMP_bm;
 #endif
@@ -500,8 +506,8 @@ void blinkDec3(uint16_t d)
 // the setup routine runs once when you press reset:
 void setup() {
 
-  Serial.begin(38400);
-  Serial.println(F("Starting"));
+  Serial.begin(38400, SERIAL_TX_ONLY);
+  Serial.println("Starting");
   delay(100);
 
   RTC_init();                           /* Initialize the RTC timer */
@@ -532,7 +538,7 @@ void setup() {
   pinMode(PIN_PD6, INPUT_PULLUP);
   pinMode(PIN_PD7, INPUT_PULLUP);
   
-  pinMode(PIN_PC0, INPUT_PULLUP); // Serial out
+  //pinMode(PIN_PC0, INPUT_PULLUP); // Serial out
   pinMode(PIN_PC1, INPUT_PULLUP);
   pinMode(PIN_PC2, INPUT_PULLUP);
   pinMode(PIN_PC3, INPUT_PULLUP);
@@ -607,6 +613,7 @@ void loop() {
     sleep_idle();
     if (!os_queryTimeCriticalJobs(ms2osticks(65)))
       sleepDelay(64);
+    //Serial.println(millis()); Serial.flush();
 #else
     digitalWriteFast(LED, (loopcnt & 0xF) == 0);
 #endif
