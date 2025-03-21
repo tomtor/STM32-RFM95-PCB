@@ -7,7 +7,7 @@ See:
 
 for background and old software samples.
 
-This repository now has tested LMIC and RadioLib Arduino code for the AVR128DB board with the RFM95W.
+This repository now has tested LMIC (https://github.com/tomtor/STM32-RFM95-PCB/tree/master/AVR128DBLora) and RadioLib (https://github.com/tomtor/STM32-RFM95-PCB/tree/master/AVR128_RadioLib) Arduino code for the AVR128DB board with the RFM95W.
 
 ![3D rendering](AVR-LORA-805.jpg)
 
