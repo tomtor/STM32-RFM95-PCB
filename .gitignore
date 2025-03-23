@@ -1,5 +1,6 @@
 *cache
 secrets.h
+my_lora.h
 build
 *-cache.lib
 *-backups

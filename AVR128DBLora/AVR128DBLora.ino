@@ -510,6 +510,8 @@ void setup() {
   Serial.println("Starting");
   delay(100);
 
+  TCA0.SPLIT.CTRLA = 0;                 // If you aren't using TCA0 for anything
+
   RTC_init();                           /* Initialize the RTC timer */
   set_sleep_mode(SLEEP_MODE_STANDBY);
 #ifdef USE_TIMER

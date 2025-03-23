@@ -43,7 +43,6 @@ void RTC_init(void)
     ;                                   /* Wait for all register to be synchronized */
   RTC.PER = RTC_PERIOD - 1;		/* 1 sec overflow */
   RTC.CLKSEL = RTC_CLKSEL_OSC32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
-  //RTC.PITINTCTRL = RTC_PI_bm;           /* PIT Interrupt: enabled */
 
   // For overflow ticks while sleeping:
   RTC.INTCTRL = RTC_OVF_bm;
@@ -120,13 +119,38 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   RTC.INTCTRL &= ~RTC_CMP_bm;
 }
 
+
+void count_rain()
+{
+#if COUNT_PIN != PIN_PA2
+#error Adapt this code fragment!
+#endif
+  //check flags, this code is from the DxCore documentation
+  byte flags = VPORTA.INTFLAGS;
+  if (flags & (1 << 2)) {
+    PORTA.PIN2CTRL &= ~PORT_ISC_gm;
+    VPORTA.INTFLAGS |= (1 << 2);
+  }
+  if (flags & (1 << 2)) {
+    // Handle flag 2 interrupt.
+    static uint16_t prev;
+    if (counter == 0)
+      time_s = 0;
+    if (time_s - prev > 1 || counter == 0) {
+      counter++;
+      prev = time_s;
+    }
+  }
+}
+
+
 #if 1
 unsigned int getBandgap ()
 {
   analogReference(INTERNAL1V024);
   analogRead(ADC_VDDDIV10); // drop first
   return analogRead(ADC_VDDDIV10);
-} // end of getBandgap
+}
 #endif
 
 #if GET_BATTERY
@@ -143,7 +167,7 @@ unsigned int getBattery ()
   unsigned int results = scale * val / 0x400;
 
   return results;
-} // end of getBattery
+}
 #endif
 
 #if 0
@@ -187,11 +211,24 @@ void blinkDec3(uint16_t d)
   blinkDec(d % 100);
 }
 
+void sleepDelay_long(uint32_t t)
+{
+#if 0
+  while (t > 32768) {
+    sleepDelay(32768);
+    t -= 32768;
+  }
+#endif
+  sleepDelay(t);
+}
+
 
 void setup() {
   Serial.begin(38400, SERIAL_TX_ONLY);
   Serial.println("Starting");
   delay(100);
+
+  TCA0.SPLIT.CTRLA = 0;                 // If you aren't using TCA0 for anything
 
   RTC_init();                           /* Initialize the RTC timer */
   set_sleep_mode(SLEEP_MODE_STANDBY);
@@ -214,12 +251,12 @@ void setup() {
 #endif
   pinMode(PIN_PD2, INPUT_PULLUP);
   pinMode(PIN_PD3, INPUT_PULLUP);
-  pinMode(PIN_PD4, INPUT_PULLUP);
+  pinMode(PIN_PD4, INPUT); 		// DIO2
   pinMode(PIN_PD5, INPUT_PULLUP);
   pinMode(PIN_PD6, INPUT_PULLUP);
   pinMode(PIN_PD7, INPUT_PULLUP);
   
-  //pinMode(PIN_PC0, INPUT_PULLUP); // Serial out
+  //pinMode(PIN_PC0, INPUT_PULLUP);	// Serial out
   pinMode(PIN_PC1, INPUT_PULLUP);
   pinMode(PIN_PC2, INPUT_PULLUP);
   pinMode(PIN_PC3, INPUT_PULLUP);
@@ -228,7 +265,9 @@ void setup() {
   pinMode(PIN_PF1, INPUT_PULLUP);
   
   pinMode(LED, OUTPUT);
+
   pinConfigure(COUNT_PIN, (PIN_DIR_INPUT | PIN_PULLUP | PIN_ISC_FALL));
+  attachInterrupt(digitalPinToInterrupt(COUNT_PIN), count_rain, FALLING);
 
   for (byte i = 0; i < 3; i++) {
     blinkN(1, LED);
@@ -238,6 +277,7 @@ void setup() {
   Serial.println(F("\nSetup ... "));
 
   Serial.println(F("Initialise the radio"));
+  radio.reset();
   int16_t state = radio.begin();
   debug(state != RADIOLIB_ERR_NONE, F("Initialise radio failed"), state, true);
 
@@ -252,7 +292,7 @@ void setup() {
   debug(state != RADIOLIB_LORAWAN_NEW_SESSION, F("Join failed"), state, true);
 
   Serial.println(F("Ready!\n"));
-  //node.setSleepFunction(mdelay_long);
+  //node.setSleepFunction(sleepDelay_long);
 }
 
 struct {
@@ -300,11 +340,13 @@ void loop() {
   Serial.print(uplinkIntervalSeconds);
   Serial.println(F(" seconds\n"));
   Serial.flush();
-  
+ 
   radio.sleep();
 
   // Wait until next uplink - observing legal & TTN FUP constraints
+  sleep_standby();
   sleepDelay(uplinkIntervalSeconds * 1000UL);  // delay needs milli-seconds
  
   blinkN(1);
+  sleep_idle();
 }

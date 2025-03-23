@@ -1,6 +1,7 @@
 #ifndef _RADIOLIB_EX_LORAWAN_CONFIG_H
 #define _RADIOLIB_EX_LORAWAN_CONFIG_H
 
+#undef Serial
 #define Serial Serial1
 
 #include <RadioLib.h>
@@ -8,10 +9,10 @@
 #define DIO1_PIN PIN_PD3
 #define DIO0_PIN PIN_PD2
 #define RESET_PIN PIN_PD5
-#define SCK_PIN PIN_PA6 // SCK for SPI1
-#define MOSI_PIN PIN_PA4 // MOSI for SPI
-#define MISO_PIN PIN_PA5  // MISO for SPI
-#define CS_PIN PIN_PD6    // CS for SPI1 === NSS
+#define SCK_PIN PIN_PA6		// SCK for SPI
+#define MOSI_PIN PIN_PA4	// MOSI for SPI
+#define MISO_PIN PIN_PA5 	// MISO for SPI
+#define CS_PIN PIN_PD6   	// CS for SPI1 === NSS
 
 // first you have to set your radio model and pin configuration
 // this is provided just as a default example
