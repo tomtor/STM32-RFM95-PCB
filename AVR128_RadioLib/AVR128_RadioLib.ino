@@ -119,20 +119,8 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   RTC.INTCTRL &= ~RTC_CMP_bm;
 }
 
-
 void count_rain()
 {
-#if COUNT_PIN != PIN_PA2
-#error Adapt this code fragment!
-#endif
-  //check flags, this code is from the DxCore documentation
-  byte flags = VPORTA.INTFLAGS;
-  if (flags & (1 << 2)) {
-    PORTA.PIN2CTRL &= ~PORT_ISC_gm;
-    VPORTA.INTFLAGS |= (1 << 2);
-  }
-  if (flags & (1 << 2)) {
-    // Handle flag 2 interrupt.
     static uint16_t prev;
     if (counter == 0)
       time_s = 0;
@@ -140,7 +128,6 @@ void count_rain()
       counter++;
       prev = time_s;
     }
-  }
 }
 
 
@@ -211,14 +198,12 @@ void blinkDec3(uint16_t d)
   blinkDec(d % 100);
 }
 
-void sleepDelay_long(uint32_t t)
+void sleepDelayLong(uint32_t t)
 {
-#if 0
   while (t > 32768) {
     sleepDelay(32768);
     t -= 32768;
   }
-#endif
   sleepDelay(t);
 }
 
@@ -292,7 +277,7 @@ void setup() {
   debug(state != RADIOLIB_LORAWAN_NEW_SESSION, F("Join failed"), state, true);
 
   Serial.println(F("Ready!\n"));
-  //node.setSleepFunction(sleepDelay_long);
+  //node.setSleepFunction(sleepDelayLong);
 }
 
 struct {
@@ -345,7 +330,7 @@ void loop() {
 
   // Wait until next uplink - observing legal & TTN FUP constraints
   sleep_standby();
-  sleepDelay(uplinkIntervalSeconds * 1000UL);  // delay needs milli-seconds
+  sleepDelayLong(uplinkIntervalSeconds * 1000UL);  // delay needs milli-seconds
  
   blinkN(1);
   sleep_idle();
