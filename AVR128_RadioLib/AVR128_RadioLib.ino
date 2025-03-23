@@ -11,10 +11,14 @@ int uplinkIntervalSeconds = 1 * 60;    // minutes x seconds
 #define LED             PIN_PA7
 #define COUNT_PIN       PIN_PA2
 
+//#define TIMING_PIN      PIN_PD7
+
 #define ON_TIME         3 // LED ON blink time in ms
 
 #define RTC_PERIOD	    0x8000 // Overflow at 32768 ticks from RTC
 #define RTC_MILLIS	    1000   // That matches 1000ms
+
+#define USE_OSC         0      // or 0 when using a 32768 crystal
 
 volatile unsigned counter;  // Counts pin transitions to low
 
@@ -42,7 +46,15 @@ void RTC_init(void)
   while (RTC.STATUS > 0)
     ;                                   /* Wait for all register to be synchronized */
   RTC.PER = RTC_PERIOD - 1;		/* 1 sec overflow */
+#if USE_OSC
   RTC.CLKSEL = RTC_CLKSEL_OSC32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
+#else
+  _PROTECTED_WRITE(CLKCTRL.XOSC32KCTRLA, 0x3);
+
+  while (RTC.STATUS > 0) ;
+
+  RTC.CLKSEL = RTC_CLKSEL_XOSC32K_gc;   /* 32.768kHz External Oscillator */
+#endif
 
   // For overflow ticks while sleeping:
   RTC.INTCTRL = RTC_OVF_bm;
@@ -96,13 +108,16 @@ void sleep_standby()
   TCB2.CTRLA = TCB2.CTRLA & ~TCB_RUNSTDBY_bm;
 }
 
-void sleepDelay(uint16_t orgn, bool precise=false)
+void sleepDelay(uint16_t orgn)
 {
+#ifdef TIMING_PIN
+  digitalWriteFast(TIMING_PIN, HIGH);
+#endif
   while (RTC.STATUS /* & RTC_CMPBUSY_bm */)  // Wait for new settings to synchronize
     ;
 
   uint32_t delay;
-  RTC.CMP = (RTC.CNT + (delay = (orgn * 32UL) + uint16_t(orgn / 128 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 128ms is exact!
+  RTC.CMP = (RTC.CNT + (delay = (orgn * 32UL) + uint16_t(orgn / 4 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 4ms is exact!
 
   while (RTC.STATUS /* & RTC_CMPBUSY_bm */)  // Wait for new settings to synchronize
     ;
@@ -110,13 +125,15 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   RTC.INTCTRL |= RTC_CMP_bm; // This might trigger a pending interrupt, so do this before assigning sleep_cnt!
   sleep_cnt = delay / RTC_PERIOD + 1; // Calculate number of wrap arounds (overflows)
   uint64_t start = millis();
-  while (sleep_cnt) {
+  while (sleep_cnt)
     sleep_cpu();
-  }
   if (!idle_mode)
     set_millis(start + orgn);
 
   RTC.INTCTRL &= ~RTC_CMP_bm;
+#ifdef TIMING_PIN
+  digitalWriteFast(TIMING_PIN, LOW);
+#endif
 }
 
 void count_rain()
@@ -200,6 +217,7 @@ void blinkDec3(uint16_t d)
 
 void sleepDelayLong(uint32_t t)
 {
+  //Serial.print("LONG:"); Serial.println(t); Serial.flush();
   while (t > 32768) {
     sleepDelay(32768);
     t -= 32768;
@@ -240,6 +258,9 @@ void setup() {
   pinMode(PIN_PD5, INPUT_PULLUP);
   pinMode(PIN_PD6, INPUT_PULLUP);
   pinMode(PIN_PD7, INPUT_PULLUP);
+#ifdef TIMING_PIN
+  pinMode(TIMING_PIN, OUTPUT);
+#endif
   
   //pinMode(PIN_PC0, INPUT_PULLUP);	// Serial out
   pinMode(PIN_PC1, INPUT_PULLUP);
@@ -277,7 +298,10 @@ void setup() {
   debug(state != RADIOLIB_LORAWAN_NEW_SESSION, F("Join failed"), state, true);
 
   Serial.println(F("Ready!\n"));
-  //node.setSleepFunction(sleepDelayLong);
+#if !USE_OSC
+  Serial.println("Using 32768 crystal!");
+  node.setSleepFunction(sleepDelayLong); // Needs a 32768 crystal
+#endif
 }
 
 struct {
@@ -334,4 +358,5 @@ void loop() {
  
   blinkN(1);
   sleep_idle();
+  Serial.printf("Up time: %02d:%02d:%02d\n", hours, minutes, secs);
 }

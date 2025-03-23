@@ -413,7 +413,7 @@ void sleepDelay(uint16_t orgn, bool precise=false)
     ;
 
   uint32_t delay;
-  RTC.CMP = (RTC.CNT + (delay = (orgn * 32UL) + uint16_t(orgn / 128 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 128ms is exact!
+  RTC.CMP = (RTC.CNT + (delay = (orgn * 32UL) + uint16_t(orgn / 4 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 4ms is exact!
 
   while (RTC.STATUS /* & RTC_CMPBUSY_bm */)  // Wait for new settings to synchronize
     ;
