@@ -51,7 +51,7 @@ void RTC_init(void)
 #if USE_OSC
   RTC.CLKSEL = RTC_CLKSEL_OSC32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
 #else
-  _PROTECTED_WRITE(CLKCTRL.XOSC32KCTRLA, CLKCTRL_ENABLE_bm | CLKCTRL_LPMODE_bm);
+  _PROTECTED_WRITE(CLKCTRL.XOSC32KCTRLA, CLKCTRL_ENABLE_bm /* | CLKCTRL_LPMODE_bm */);
 
   while (RTC.STATUS > 0) ;
 
@@ -66,7 +66,8 @@ void RTC_init(void)
 
 volatile uint8_t sleep_cnt;
 
-volatile uint8_t secs, hours, minutes;
+volatile uint8_t secs, minutes;
+volatile uint16_t hours;
 volatile uint16_t time_s;
 
 ISR(RTC_CNT_vect)
@@ -86,10 +87,12 @@ ISR(RTC_CNT_vect)
         minutes++;
       else {
         minutes = 0;
+#if 0
         if (hours < 23)
           hours++;
         else
           hours = 0;
+#endif
       }  
     }
     RTC.INTFLAGS = RTC_OVF_bm;          /* Clear interrupt flag by writing '1' (required) */
@@ -118,18 +121,12 @@ void sleepDelay(uint16_t orgn)
   while (RTC.STATUS /* & RTC_CMPBUSY_bm */)  // Wait for new settings to synchronize
     ;
 
-  uint32_t delay;
+  uint32_t tdelay;
   uint16_t cnt = RTC.CNT;
-  RTC.CMP = (cnt + (delay = (orgn * 32UL) + uint16_t(orgn / 4 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 4ms is exact!
-
-  if (RTC.CMP - cnt <= 1) { // overflow is/was near
-    while (RTC.CNT < RTC.CMP) // Wait for it
-      ;
-    delay -= RTC_PERIOD;
-  }
+  RTC.CMP = (cnt + (tdelay = (orgn * 32UL) + uint16_t(orgn / 4 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 4ms is exact!
 
   RTC.INTCTRL |= RTC_CMP_bm; // This might trigger a pending interrupt, so do this before assigning sleep_cnt!
-  sleep_cnt = delay / RTC_PERIOD + 1; // Calculate number of wrap arounds (overflows)
+  sleep_cnt = tdelay / RTC_PERIOD + 1; // Calculate number of wrap arounds (overflows)
   uint64_t start = millis();
   while (sleep_cnt)
     sleep_cpu();
@@ -331,6 +328,7 @@ void readData()
     mydata.power = getBandgap() - 100;
     noInterrupts(); // prevent race condition with rain interrupts
     mydata.rain = counter;
+    mydata.temp = secs;
     counter = 0;
     interrupts();
 }
