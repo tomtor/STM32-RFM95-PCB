@@ -412,14 +412,27 @@ void sleepDelay(uint16_t orgn, bool precise=false)
   while (RTC.STATUS /* & RTC_CMPBUSY_bm */)  // Wait for new settings to synchronize
     ;
 
-  uint32_t delay;
-  RTC.CMP = (RTC.CNT + (delay = (orgn * 32UL) + uint16_t(orgn / 4 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 4ms is exact!
+  uint32_t tdelay;
+  noInterrupts();
+  uint16_t cnt = RTC.CNT;
+  RTC.CMP = (cnt + (tdelay = (orgn * 32UL) + uint16_t(orgn / 4 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 4ms is exact!
+  // Note 20011 ms = 655360 ticks = 20 overflows exactly, so CMP will be set to the current CNT and this works OK
+  // 9005 will set CMP to CNT+1
 
-  while (RTC.STATUS /* & RTC_CMPBUSY_bm */)  // Wait for new settings to synchronize
-    ;
-  
+#if 1
+  if (RTC.CNT == RTC.CMP) {
+    tdelay -= RTC_PERIOD;
+  } else if (((RTC.CMP - cnt) & (RTC_PERIOD-1)) <= 2) { // overflow is/was near, 4Mhz clock or faster
+    while (RTC.CNT != RTC.CMP) // Wait for it...
+      ;
+    tdelay -= RTC_PERIOD;
+  }
+#endif
+
+  interrupts();
+
   RTC.INTCTRL |= RTC_CMP_bm; // This might trigger a pending interrupt, so do this before assigning sleep_cnt!
-  sleep_cnt = delay / RTC_PERIOD + 1; // Calculate number of wrap arounds (overflows)
+  sleep_cnt = tdelay / RTC_PERIOD + 1; // Calculate number of wrap arounds (overflows)
   uint64_t start = millis();
   while (sleep_cnt) {
     sleep_cpu();

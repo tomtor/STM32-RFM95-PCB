@@ -51,7 +51,7 @@ void RTC_init(void)
 #if USE_OSC
   RTC.CLKSEL = RTC_CLKSEL_OSC32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
 #else
-  _PROTECTED_WRITE(CLKCTRL.XOSC32KCTRLA, CLKCTRL_ENABLE_bm /* | CLKCTRL_LPMODE_bm */);
+  _PROTECTED_WRITE(CLKCTRL.XOSC32KCTRLA, CLKCTRL_ENABLE_bm | CLKCTRL_LPMODE_bm);
 
   while (RTC.STATUS > 0) ;
 
@@ -113,7 +113,7 @@ void sleep_standby()
   TCB2.CTRLA = TCB2.CTRLA & ~TCB_RUNSTDBY_bm;
 }
 
-void sleepDelay(uint16_t orgn)
+void sleepDelay(uint16_t n)
 {
 #ifdef TIMING_PIN
   digitalWriteFast(TIMING_PIN, HIGH);
@@ -122,8 +122,23 @@ void sleepDelay(uint16_t orgn)
     ;
 
   uint32_t tdelay;
+  noInterrupts();
   uint16_t cnt = RTC.CNT;
-  RTC.CMP = (cnt + (tdelay = (orgn * 32UL) + uint16_t(orgn / 4 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 4ms is exact!
+  RTC.CMP = (cnt + (tdelay = (n * 32UL) + uint16_t(n / 4 * 3))) & (RTC_PERIOD-1); // With this calculation every multiple of 4ms is exact!
+  // Note 20011 ms = 655360 ticks = 20 overflows exactly, so CMP will be set to the current CNT and this works OK
+  // 9005 will set CMP to CNT+1
+
+#if 1
+  if (RTC.CNT == RTC.CMP) {
+    tdelay -= RTC_PERIOD;
+  } else if (((RTC.CMP - cnt) & (RTC_PERIOD-1)) <= 2) { // overflow is/was near, 4Mhz clock or faster
+    while (RTC.CNT != RTC.CMP) // Wait for it...
+      ;
+    tdelay -= RTC_PERIOD;
+  }
+#endif
+
+  interrupts();
 
   RTC.INTCTRL |= RTC_CMP_bm; // This might trigger a pending interrupt, so do this before assigning sleep_cnt!
   sleep_cnt = tdelay / RTC_PERIOD + 1; // Calculate number of wrap arounds (overflows)
@@ -131,7 +146,7 @@ void sleepDelay(uint16_t orgn)
   while (sleep_cnt)
     sleep_cpu();
   if (!idle_mode)
-    set_millis(start + orgn);
+    set_millis(start + n);
 
   RTC.INTCTRL &= ~RTC_CMP_bm;
 #ifdef TIMING_PIN
