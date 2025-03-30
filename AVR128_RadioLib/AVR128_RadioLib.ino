@@ -34,12 +34,28 @@ void fillDEVEUI (u1_t* buf) { // Fetch AVR128 serial numbers
   // Make locally registered:
   buf[0] = (buf[0] & ~0x3) | 0x1;
 
-  Serial.print("DevEui: ");
+  Serial.print(F("DevEui: "));
   for (int i = 7; i >= 0; i--) {
     Serial.printHex((uint8_t)buf[i]);
     Serial.print(' ');
   }
   Serial.println("");
+}
+
+void wdt_enable() {
+  while (WDT.STATUS & WDT_SYNCBUSY_bm)
+	;
+  _PROTECTED_WRITE(WDT.CTRLA, WDT_PERIOD_8KCLK_gc); // no window, 8 seconds
+}
+
+void wdt_reset() {
+  __asm__ __volatile__ ("wdr"::);
+}
+
+void wdt_disable() {
+  while (WDT.STATUS & WDT_SYNCBUSY_bm)
+	;
+  _PROTECTED_WRITE(WDT.CTRLA, 0);
 }
 
 void RTC_init(void)
@@ -67,7 +83,7 @@ void RTC_init(void)
 volatile uint8_t sleep_cnt;
 
 volatile uint8_t secs, minutes;
-volatile uint16_t hours;
+volatile uint8_t hours;
 volatile uint16_t time_s;
 
 ISR(RTC_CNT_vect)
@@ -87,7 +103,7 @@ ISR(RTC_CNT_vect)
         minutes++;
       else {
         minutes = 0;
-#if 0
+#if 1
         if (hours < 23)
           hours++;
         else
@@ -97,20 +113,6 @@ ISR(RTC_CNT_vect)
     }
     RTC.INTFLAGS = RTC_OVF_bm;          /* Clear interrupt flag by writing '1' (required) */
   }
-}
-
-bool idle_mode = true;
-
-void sleep_idle() // We do not use real idle mode, but just keep TCB2 running in standby
-{
-  idle_mode = true;
-  TCB2.CTRLA = TCB2.CTRLA | TCB_RUNSTDBY_bm;
-}
-
-void sleep_standby()
-{
-  idle_mode = false;
-  TCB2.CTRLA = TCB2.CTRLA & ~TCB_RUNSTDBY_bm;
 }
 
 void sleepDelay(uint16_t n)
@@ -128,7 +130,6 @@ void sleepDelay(uint16_t n)
   // Note 20011 ms = 655360 ticks = 20 overflows exactly, so CMP will be set to the current CNT and this works OK
   // 9005 will set CMP to CNT+1
 
-#if 1
   if (RTC.CNT == RTC.CMP) {
     tdelay -= RTC_PERIOD;
   } else if (((RTC.CMP - cnt) & (RTC_PERIOD-1)) <= 2) { // overflow is/was near, 4Mhz clock or faster
@@ -136,17 +137,21 @@ void sleepDelay(uint16_t n)
       ;
     tdelay -= RTC_PERIOD;
   }
-#endif
 
   interrupts();
 
   RTC.INTCTRL |= RTC_CMP_bm; // This might trigger a pending interrupt, so do this before assigning sleep_cnt!
+#if RTC_PERIOD != 0x8000
   sleep_cnt = tdelay / RTC_PERIOD + 1; // Calculate number of wrap arounds (overflows)
+#else
+  sleep_cnt = 2 * (tdelay >> 16) + ((tdelay & 0x8000) ? 2 : 1); // 10 times faster...
+#endif
   uint64_t start = millis();
-  while (sleep_cnt)
+  while (sleep_cnt) {
     sleep_cpu();
-  if (!idle_mode)
-    set_millis(start + n);
+    wdt_reset();
+  }
+  set_millis(start + n);
 
   RTC.INTCTRL &= ~RTC_CMP_bm;
 #ifdef TIMING_PIN
@@ -236,18 +241,19 @@ void sleepDelayRadio(uint32_t t)
 {
   if (t > 500)
     radio.sleep();
-  sleep_standby();
   sleepDelay(t);
-  sleep_idle();
 }
 
 void sleepDelayLong(uint32_t t)
 {
-  while (t > 32768) {
-    sleepDelay(32768);
-    t -= 32768;
+  const int interval = 16000;
+  while (t > interval) {
+    sleepDelay(interval);
+    t -= interval;
+    blinkN(1);
   }
   sleepDelay(t);
+  blinkN(1);
 }
 
 
@@ -255,12 +261,12 @@ void setup() {
   Serial.begin(38400, SERIAL_TX_ONLY);
   Serial.println("Starting");
   delay(100);
+  wdt_enable();
 
   TCA0.SPLIT.CTRLA = 0;                 // If you aren't using TCA0 for anything
 
   RTC_init();                           /* Initialize the RTC timer */
   set_sleep_mode(SLEEP_MODE_STANDBY);
-  sleep_standby();
   sleep_enable();                       /* Enable sleep mode, but not going to sleep yet */
 
   pinMode(PIN_PA0, INPUT_PULLUP);
@@ -324,7 +330,7 @@ void setup() {
 
   Serial.println(F("Ready!\n"));
 #if !USE_OSC
-  Serial.println("Using 32768 crystal!");
+  Serial.println(F("Using 32768 crystal!"));
   node.setSleepFunction(sleepDelayRadio); // Needs a 32768 crystal
 #endif
 }
@@ -343,7 +349,7 @@ void readData()
     mydata.power = getBandgap() - 100;
     noInterrupts(); // prevent race condition with rain interrupts
     mydata.rain = counter;
-    mydata.temp = secs;
+    mydata.temp = (hours << 11) | (minutes << 5) | (secs >> 1);
     counter = 0;
     interrupts();
 }
@@ -354,7 +360,7 @@ void loop() {
   readData();
   
   // Perform an uplink
-  uint8_t reply[2];
+  uint8_t reply[4];
   size_t replylen;
   int16_t state = node.sendReceive((uint8_t*)&mydata, sizeof(mydata), 1, reply, &replylen);
   debug(state < RADIOLIB_ERR_NONE, F("Error in sendReceive"), state, false);
@@ -366,6 +372,10 @@ void loop() {
     if (replylen == 1) {
       mydata.rate2= reply[0];
       uplinkIntervalSeconds= (1 << reply[0]);
+    } else if (replylen == 3) {
+      hours = reply[0];
+      minutes = reply[1];
+      secs = reply[2];
     }
   } else {
     Serial.println(F("No downlink received"));
@@ -379,10 +389,11 @@ void loop() {
   radio.sleep();
 
   // Wait until next uplink - observing legal & TTN FUP constraints
-  sleep_standby();
-  sleepDelayLong(uplinkIntervalSeconds * 1000UL);  // delay needs milli-seconds
+  for (byte w= 0; w <= 2; w++) {
+    sleepDelayLong(uplinkIntervalSeconds * 1000UL);  // delay needs milli-seconds
+    if (counter)
+      break;
+  }
  
-  blinkN(1);
-  sleep_idle();
-  Serial.printf("Up time: %02d:%02d:%02d\n", hours, minutes, secs);
+  Serial.printf(F("Time: %02d:%02d:%02d\r\n"), hours, minutes, secs);
 }
